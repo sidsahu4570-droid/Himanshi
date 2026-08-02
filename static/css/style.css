@@ -956,11 +956,14 @@ body {
   width: 100%;
   margin: 80px auto;
   padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
 }
 
 .storybook-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 }
 
 .chapter-section {
@@ -969,8 +972,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 24px;
-  margin-bottom: 60px;
+  padding: 40px 24px;
+  margin-bottom: 0 !important;
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1067,15 +1070,21 @@ body {
 }
 
 @media (max-width: 768px) {
+  .storybook-container {
+    padding: 0 12px;
+    margin: 40px auto;
+    gap: 80px;
+  }
+
   .chapter-section {
-    padding: 40px 16px;
+    padding: 20px 16px;
     min-height: 100vh;
     min-height: 100dvh;
     background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    margin-bottom: 40px;
+    margin-bottom: 0 !important;
   }
 
   .chapter-card {

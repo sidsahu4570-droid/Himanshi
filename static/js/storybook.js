@@ -49,8 +49,8 @@ function initChapterReveals() {
 
     if (card) {
       timeline.fromTo(card, 
-        { opacity: 0, y: 30, scale: 0.96 }, 
-        { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }
+        { opacity: 0, scale: 0.98 }, 
+        { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' }
       );
     }
 
