@@ -85,11 +85,9 @@ function initLandingSequence() {
 
     // Fade out Landing Screen
     landingScreen.classList.add('fade-out');
-
-    // Scroll to Page 1
     setTimeout(() => {
-      document.getElementById('page-1').scrollIntoView({ behavior: 'smooth' });
-    }, 400);
+      landingScreen.style.display = 'none';
+    }, 1500);
   });
 }
 
@@ -159,13 +157,14 @@ function initScrollAnimations() {
     gsap.to(card, {
       scrollTrigger: {
         trigger: card,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+        once: true
       },
       opacity: 1,
       y: 0,
       duration: 0.8,
-      delay: idx * 0.2,
+      delay: idx * 0.15,
       ease: 'power3.out'
     });
   });
@@ -174,8 +173,9 @@ function initScrollAnimations() {
   gsap.from('#page-3 .sincere-card', {
     scrollTrigger: {
       trigger: '#page-3',
-      start: 'top 70%',
-      toggleActions: 'play none none reverse'
+      start: 'top 75%',
+      toggleActions: 'play none none none',
+      once: true
     },
     opacity: 0,
     scale: 0.9,
@@ -190,13 +190,14 @@ function initScrollAnimations() {
       scrollTrigger: {
         trigger: card,
         start: 'top 85%',
-        toggleActions: 'play none none reverse'
+        toggleActions: 'play none none none',
+        once: true
       },
       opacity: 0,
       y: 40,
       scale: 0.85,
       duration: 0.9,
-      delay: idx * 0.25,
+      delay: idx * 0.2,
       ease: 'back.out(1.7)'
     });
   });
@@ -205,8 +206,9 @@ function initScrollAnimations() {
   gsap.from('#page-8 .vintage-letter', {
     scrollTrigger: {
       trigger: '#page-8',
-      start: 'top 75%',
-      toggleActions: 'play none none reverse'
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+      once: true
     },
     opacity: 0,
     y: 50,
@@ -349,16 +351,7 @@ function initCinematicApologyScene() {
             opacity: 1,
             y: 0,
             duration: 1.4,
-            ease: 'power2.out',
-            onComplete: () => {
-              // Pause 3 seconds, then smooth scroll to next section
-              setTimeout(() => {
-                const nextSection = document.getElementById('page-5');
-                if (nextSection) {
-                  nextSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }, 3000);
-            }
+            ease: 'power2.out'
           });
         }, 2000);
       }

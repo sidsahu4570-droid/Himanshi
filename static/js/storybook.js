@@ -24,9 +24,9 @@ function initChapterReveals() {
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: chapter,
-        start: 'top 75%',
-        end: 'bottom 25%',
-        toggleActions: 'play none none reverse'
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+        once: true
       }
     });
 
