@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Letter for Himanshi ❤️</title>
+  
+  <!-- SEO & Social Meta Tags -->
+  <meta name="description" content="A sincere, elegant digital letter for Himanshi.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+  <!-- Custom Cursor Glow -->
+  <div class="cursor-glow"></div>
+  <div class="cursor-dot"></div>
+
+  <!-- Global Audio Toggle Floating Button -->
+  <button id="audio-toggle-btn" class="audio-control-btn" aria-label="Toggle Romantic Ambient Music">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+  </button>
+
+  <!-- Global Dynamic Canvas Background -->
+  <canvas id="global-canvas"></canvas>
+
+  <!-- Heart & Star Particle Shower Canvas for Final Page -->
+  <canvas id="heart-shower-canvas"></canvas>
+
+  <!-- LANDING SCREEN OVERLAY -->
+  <section id="landing-screen">
+    <div class="landing-content">
+      <div id="landing-subtitle-text" class="landing-subtitle"></div>
+      <h1 id="landing-title" class="landing-title">Himanshi ❤️</h1>
+      <div>
+        <button id="open-btn" class="btn-glow open-btn">
+          <span>Please Open This</span>
+          <span class="btn-icon">✨</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN SCENE CONTAINER -->
+  <main>
+
+    <!-- PAGE 1: SUNSET & HANDWRITTEN TYPING LETTER -->
+    <section id="page-1" class="page-section">
+      <div class="glass-card letter-card">
+        <h2 class="letter-header">Dear Himanshi,</h2>
+        <div id="page1-typed-letter" class="typed-text-body"></div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll Down</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- PAGE 2: TIMELINE - I ACCEPT MY MISTAKE -->
+    <section id="page-2" class="page-section">
+      <h2 class="section-title">I Accept My Mistake</h2>
+      <p class="section-subtitle">Taking full responsibility for my actions...</p>
+
+      <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <!-- Card 1 -->
+        <div class="timeline-card-wrapper left">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "I should have listened more."
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="timeline-card-wrapper right">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "I shouldn't have raised my voice."
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="timeline-card-wrapper left">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "I'm really sorry for yelling at you."
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="timeline-card-wrapper right">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "You deserved patience, not anger."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: AURORA & FLOATING LANTERNS -->
+    <section id="page-3" class="page-section">
+      <h2 class="section-title">I Never Wanted To Hurt You</h2>
+      <div class="glass-card sincere-card">
+        <p class="sincere-paragraph">
+          "I know saying sorry doesn't erase what happened.<br><br>
+          But I hope it shows that I truly regret it.<br><br>
+          I wish I could go back and change that moment.<br><br>
+          If I could, I would choose <span class="highlight-text">kindness</span> every single time."
+        </p>
+      </div>
+    </section>
+
+    <!-- PAGE 4: GIANT GLOWING PULSING HEART -->
+    <section id="page-4" class="page-section">
+      <div class="heart-container">
+        <svg class="glowing-heart-svg" viewBox="0 0 32 32">
+          <path fill="url(#heart-grad)" d="M16 28.5C15.4 28.5 14.8 28.2 14.4 27.8C8.5 22.3 4 18 4 12.5C4 8.4 7.2 5.2 11.3 5.2C13.7 5.2 15.9 6.4 17.3 8.3C18.7 6.4 20.9 5.2 23.3 5.2C27.4 5.2 30.6 8.4 30.6 12.5C30.6 18 26.1 22.3 20.2 27.8C19.8 28.2 19.2 28.5 18.6 28.5H16Z"/>
+          <defs>
+            <linearGradient id="heart-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff6b8b" />
+              <stop offset="50%" stop-color="#ff3366" />
+              <stop offset="100%" stop-color="#ffd700" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="heart-center-text">I'm Sorry ❤️</span>
+      </div>
+    </section>
+
+    <!-- PAGE 5: THREE ANIMATED PROMISES -->
+    <section id="page-5" class="page-section">
+      <h2 class="section-title">If You'll Give Me One Chance</h2>
+      <p class="section-subtitle">Three sincere promises I hold in my heart</p>
+
+      <div class="promises-grid">
+        <div class="glass-card promise-card">
+          <div class="flower-icon">🌸</div>
+          <p class="promise-text">"I'll listen before reacting."</p>
+        </div>
+        <div class="glass-card promise-card">
+          <div class="flower-icon">🌸</div>
+          <p class="promise-text">"I'll respect your feelings."</p>
+        </div>
+        <div class="glass-card promise-card">
+          <div class="flower-icon">🌸</div>
+          <p class="promise-text">"I'll become a better person."</p>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- PAGE 8: THE VINTAGE APOLOGY LETTER -->
+    <section id="page-8" class="page-section">
+      <div class="vintage-letter">
+        <div class="vintage-letter-content">
+Himanshi,
+
+I know I cannot force you to forgive me.
+I only wanted you to know that I'm truly sorry.
+
+I regret yelling at you.
+I regret hurting someone who means so much to me.
+
+Whether you forgive me today, tomorrow, or never,
+I'll always respect your feelings.
+
+Thank you for reading this.
+        </div>
+        <div class="signature">— Siddharth ❤️</div>
+      </div>
+    </section>
+
+    <!-- FINAL PAGE: SNOWFALL, MOON, WHITE ROSE & NO PRESSURE BUTTON -->
+    <section id="page-final" class="page-section">
+      <div class="moon-graphic"></div>
+      
+      <div class="rose-wrapper">
+        <span class="rose-icon">🌹</span>
+      </div>
+
+      <h2 class="final-title">If you ever feel ready...</h2>
+      <p class="final-subtext">I'll always be here to listen.</p>
+
+      <button id="final-heart-btn" class="btn-glow">
+        <span>No Pressure. Just Thank You For Reading.</span>
+        <span class="btn-icon">❤️</span>
+      </button>
+    </section>
+
+  </main>
+
+  <!-- JS Modules -->
+  <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/background.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>
