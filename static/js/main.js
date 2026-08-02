@@ -113,16 +113,25 @@ function initPage1Typing() {
   const letterTextContainer = document.getElementById('page1-typed-letter');
   if (!letterTextContainer) return;
 
-  const letterText = `I don't know why you're upset with me, but I can feel the distance between us.
+  const letterText = `Three years ago, a simple message became the beginning of a story that I still remember.
 
-Maybe I made mistakes that hurt you.
-Maybe I didn't understand your feelings.
+At first, I was too quick to express my feelings. Looking back, I understand that I should have been more patient, and if that made you uncomfortable, I'm truly sorry.
 
-Whatever the reason is...
-I genuinely want to understand.
+Life gave us another chance to talk again. We shared our dreams, our careers, the places we wanted to visit, the cars we loved, the adventures we imagined, and countless conversations that slowly became some of my favourite memories.
 
-If I hurt you...
-I'm truly sorry.`;
+Today, this website isn't an attempt to change your mind or make you feel guilty.
+
+I made it because I wanted to say something I never expressed properly.
+
+I'm sorry for the moments where I hurt you, especially the day I raised my voice.
+
+I can't change what happened, but I can take responsibility for it.
+
+Everything you'll read below is simply our story, told through the memories that have stayed with me.
+
+Thank you for taking the time to read it.
+
+— Siddharth`;
 
 
   let typedIndex = 0;
