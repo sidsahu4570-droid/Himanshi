@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initCinematicApologyScene();
   initPolaroids();
-  initFinalButton();
+  initFinalLakeSection();
 });
 
 /* ==========================================================================
@@ -275,17 +275,315 @@ function initPolaroids() {
 }
 
 /* ==========================================================================
-   7. FINAL PAGE BUTTON - HEART SHOWER EXPLOSION
+   7. SERENE NIGHT LAKE FINAL SECTION & WHATSAPP BUTTON
    ========================================================================== */
-function initFinalButton() {
-  const finalBtn = document.getElementById('final-heart-btn');
-  if (!finalBtn) return;
+function initFinalLakeSection() {
+  const section = document.getElementById('page-final');
+  const msgBtn = document.getElementById('message-siddharth-btn');
+  const card = document.querySelector('.final-content-card');
 
-  finalBtn.addEventListener('click', () => {
-    if (typeof window.triggerHeartShower === 'function') {
-      window.triggerHeartShower();
+  if (!section) return;
+
+  // Init Lake Canvas
+  initFinalLakeCanvas();
+
+  // ScrollTrigger for Section Fade-in & Audio softening
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 70%',
+    onEnter: () => {
+      // Soften piano background audio volume to a whisper
+      if (window.romanticAudio && window.romanticAudio.masterGain && window.romanticAudio.audioCtx) {
+        window.romanticAudio.masterGain.gain.linearRampToValueAtTime(0.06, window.romanticAudio.audioCtx.currentTime + 2.5);
+      }
+
+      if (card) {
+        gsap.fromTo(card,
+          { opacity: 0, y: 40, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.8, ease: 'power3.out' }
+        );
+      }
     }
   });
+
+  // Ripple effect on Message button click
+  if (msgBtn) {
+    msgBtn.addEventListener('click', (e) => {
+      const rect = msgBtn.getBoundingClientRect();
+      const circle = document.createElement('span');
+      const diameter = Math.max(rect.width, rect.height);
+      const radius = diameter / 2;
+
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${e.clientX - rect.left - radius}px`;
+      circle.style.top = `${e.clientY - rect.top - radius}px`;
+      circle.classList.add('ripple-effect');
+
+      const existing = msgBtn.querySelector('.ripple-effect');
+      if (existing) existing.remove();
+
+      msgBtn.appendChild(circle);
+    });
+  }
+}
+
+// Serene Night Lake Canvas Engine
+function initFinalLakeCanvas() {
+  const canvas = document.getElementById('final-lake-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let time = 0;
+
+  // Stars (300 twinkling stars)
+  const stars = [];
+  for (let i = 0; i < 300; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * (canvas.height * 0.58),
+      radius: Math.random() * 1.6 + 0.4,
+      alpha: Math.random() * 0.7 + 0.3,
+      vAlpha: (Math.random() - 0.5) * 0.01
+    });
+  }
+
+  // Floating Lanterns (20 lanterns)
+  const lanterns = [];
+  for (let i = 0; i < 20; i++) {
+    lanterns.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 10 + 8,
+      vy: -(Math.random() * 0.5 + 0.3),
+      vx: (Math.random() - 0.5) * 0.2,
+      alpha: Math.random() * 0.6 + 0.4
+    });
+  }
+
+  // Fireflies (30 fireflies)
+  const fireflies = [];
+  for (let i = 0; i < 30; i++) {
+    fireflies.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.7 + 0.3
+    });
+  }
+
+  // Rose Petals (20 floating petals)
+  const petals = [];
+  for (let i = 0; i < 20; i++) {
+    petals.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      size: Math.random() * 7 + 5,
+      vy: Math.random() * 0.8 + 0.4,
+      vx: Math.random() * 0.5 - 0.25,
+      rotation: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 1.5,
+      opacity: Math.random() * 0.5 + 0.5
+    });
+  }
+
+  // Subtle Distant Hearts (12 low-opacity hearts)
+  const subtleHearts = [];
+  for (let i = 0; i < 12; i++) {
+    subtleHearts.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * (canvas.height * 0.5),
+      size: Math.random() * 6 + 4,
+      vy: -(Math.random() * 0.2 + 0.1),
+      vx: (Math.random() - 0.5) * 0.15,
+      alpha: Math.random() * 0.15 + 0.05
+    });
+  }
+
+  // Clouds (4 slow cloud puffs)
+  const clouds = [
+    { x: canvas.width * 0.1, y: 60, r: 80, speed: 0.15 },
+    { x: canvas.width * 0.4, y: 100, r: 110, speed: 0.1 },
+    { x: canvas.width * 0.7, y: 50, r: 90, speed: 0.12 }
+  ];
+
+  function drawMoonlightReflection() {
+    const horizon = canvas.height * 0.58;
+    const moonCenterX = canvas.width / 2;
+    const lakeHeight = canvas.height - horizon;
+
+    // Lake Water Background
+    const lakeGrad = ctx.createLinearGradient(0, horizon, 0, canvas.height);
+    lakeGrad.addColorStop(0, '#060a17');
+    lakeGrad.addColorStop(0.5, '#090d21');
+    lakeGrad.addColorStop(1, '#04060e');
+    ctx.fillStyle = lakeGrad;
+    ctx.fillRect(0, horizon, canvas.width, lakeHeight);
+
+    // Moonlight reflection column across water
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    for (let y = horizon; y < canvas.height; y += 4) {
+      const progress = (y - horizon) / lakeHeight;
+      const spread = 20 + progress * 240;
+      const waveOffset = Math.sin(y * 0.08 + time * 2) * (5 + progress * 15);
+      const alpha = (1 - progress * 0.7) * (0.25 + Math.sin(y * 0.1 + time) * 0.08);
+
+      const reflGrad = ctx.createRadialGradient(
+        moonCenterX + waveOffset, y, 0,
+        moonCenterX + waveOffset, y, spread
+      );
+      reflGrad.addColorStop(0, `rgba(255, 246, 214, ${alpha})`);
+      reflGrad.addColorStop(0.4, `rgba(212, 175, 55, ${alpha * 0.5})`);
+      reflGrad.addColorStop(1, 'transparent');
+
+      ctx.fillStyle = reflGrad;
+      ctx.fillRect(0, y, canvas.width, 4);
+    }
+    ctx.restore();
+  }
+
+  function drawHeart(x, y, size, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#ffb7c5';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#ff6b8b';
+    ctx.beginPath();
+    const topCurveHeight = size * 0.3;
+    ctx.moveTo(x, y + topCurveHeight);
+    ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+    ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + size, x, y + size);
+    ctx.bezierCurveTo(x, y + size, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+    ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animate() {
+    time += 0.02;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 1. Lake Reflection
+    drawMoonlightReflection();
+
+    // 2. Stars
+    stars.forEach(s => {
+      s.alpha += s.vAlpha;
+      if (s.alpha > 0.95 || s.alpha < 0.2) s.vAlpha = -s.vAlpha;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, s.alpha);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // 3. Slow Moving Clouds
+    clouds.forEach(c => {
+      c.x += c.speed;
+      if (c.x - c.r > canvas.width) c.x = -c.r;
+      ctx.save();
+      ctx.globalAlpha = 0.04;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // 4. Subtle Distant Hearts
+    subtleHearts.forEach(h => {
+      h.y += h.vy;
+      h.x += h.vx;
+      if (h.y < 0) {
+        h.y = canvas.height * 0.5;
+        h.x = Math.random() * canvas.width;
+      }
+      drawHeart(h.x, h.y, h.size, h.alpha);
+    });
+
+    // 5. Floating Lanterns
+    lanterns.forEach(l => {
+      l.y += l.vy;
+      l.x += l.vx;
+      if (l.y < -30) {
+        l.y = canvas.height + 20;
+        l.x = Math.random() * canvas.width;
+      }
+      ctx.save();
+      ctx.globalAlpha = l.alpha;
+      ctx.fillStyle = '#ffaa33';
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = '#ffd700';
+      ctx.beginPath();
+      ctx.roundRect(l.x - l.size / 2, l.y - l.size, l.size, l.size * 1.3, 4);
+      ctx.fill();
+
+      // Flame core
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(l.x, l.y - l.size * 0.3, l.size * 0.25, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // 6. Fireflies
+    fireflies.forEach(f => {
+      f.x += f.vx;
+      f.y += f.vy;
+      if (f.x < 0) f.x = canvas.width;
+      if (f.x > canvas.width) f.x = 0;
+      if (f.y < 0) f.y = canvas.height;
+      if (f.y > canvas.height) f.y = 0;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, f.alpha);
+      ctx.fillStyle = '#ffd700';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#ffd700';
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // 7. Rose Petals
+    petals.forEach(p => {
+      p.y += p.vy;
+      p.x += Math.sin(p.y * 0.01) * 0.6 + p.vx;
+      p.rotation += p.vRot;
+
+      if (p.y > canvas.height) {
+        p.y = -20;
+        p.x = Math.random() * canvas.width;
+      }
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = '#ffb7c5';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-p.size, -p.size, -p.size, p.size, 0, p.size * 1.5);
+      ctx.bezierCurveTo(p.size, p.size, p.size, -p.size, 0, 0);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 
 /* ==========================================================================

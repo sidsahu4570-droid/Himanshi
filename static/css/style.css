@@ -1222,4 +1222,221 @@ body {
   margin-bottom: 16px;
 }
 
+/* ==========================================================================
+   FINAL SECTION STYLING (SERENE NIGHT LAKE & WHATSAPP BUTTON)
+   ========================================================================== */
+.final-section-wrap {
+  background: linear-gradient(180deg, #050816 0%, #0d1229 55%, #050814 100%) !important;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+}
+
+.final-moon {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fff7db 55%, #d4af37 100%);
+  box-shadow: 0 0 60px rgba(255, 247, 219, 0.85), 0 0 120px rgba(212, 175, 55, 0.45);
+  z-index: 2;
+}
+
+.final-moonlight-glow {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 247, 219, 0.16) 0%, rgba(212, 175, 55, 0.05) 50%, transparent 75%);
+  filter: blur(40px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+#final-lake-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.lake-fog {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 10, 23, 0.85) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.final-content-card {
+  position: relative;
+  z-index: 3;
+  max-width: 780px;
+  width: 100%;
+  padding: 52px 40px;
+  margin-top: 130px;
+  margin-bottom: 40px;
+  text-align: center;
+  background: rgba(12, 10, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 28px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 183, 197, 0.15);
+}
+
+.final-title-text {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: var(--color-white);
+  margin-bottom: 16px;
+  text-shadow: 0 0 20px rgba(255, 183, 197, 0.4);
+}
+
+.final-subtitle-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  line-height: 1.85;
+  color: var(--color-pink-soft);
+  margin-bottom: 28px;
+  font-style: italic;
+}
+
+.final-small-para p {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  line-height: 1.9;
+  color: var(--color-white-soft);
+  margin-bottom: 14px;
+}
+
+.final-btn-wrapper {
+  margin: 36px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.glass-message-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 42px;
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25);
+  overflow: hidden;
+  transition: all 0.4s var(--transition-smooth);
+  animation: heartbeatGlow 8s infinite ease-in-out;
+}
+
+@keyframes heartbeatGlow {
+  0%, 90%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25);
+  }
+  93% {
+    transform: scale(1.06);
+    box-shadow: 0 15px 40px rgba(255, 107, 139, 0.5), 0 0 35px rgba(255, 215, 0, 0.45);
+  }
+  96% {
+    transform: scale(1.02);
+  }
+  98% {
+    transform: scale(1.05);
+  }
+}
+
+.glass-message-btn:hover {
+  transform: scale(1.07) translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 15px 40px rgba(255, 107, 139, 0.6), 0 0 35px rgba(255, 215, 0, 0.5);
+}
+
+.glass-message-btn .btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: rippleAnim 0.7s linear;
+  pointer-events: none;
+}
+
+@keyframes rippleAnim {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.final-closing-note {
+  margin-top: 24px;
+}
+
+.no-pressure-title {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-gold-light);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.no-pressure-desc {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  line-height: 1.85;
+  color: var(--color-text-dim);
+  margin-bottom: 24px;
+}
+
+.final-heart-sig {
+  font-family: var(--font-script);
+  font-size: 2.6rem;
+  color: var(--color-pink-soft);
+  text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
+}
+
+@media (max-width: 768px) {
+  .final-content-card {
+    padding: 36px 20px;
+    margin-top: 110px;
+  }
+
+  .glass-message-btn {
+    padding: 16px 32px;
+    font-size: 1.05rem;
+    width: 100%;
+  }
+}
+
 
