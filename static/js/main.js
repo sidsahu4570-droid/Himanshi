@@ -86,7 +86,8 @@ function initLandingSequence() {
     // Fade out Landing Screen
     landingScreen.classList.add('fade-out');
     setTimeout(() => {
-      landingScreen.style.display = 'none';
+      landingScreen.style.visibility = 'hidden';
+      landingScreen.style.pointerEvents = 'none';
     }, 1500);
   });
 }
@@ -671,7 +672,8 @@ function initCinematicApologyScene() {
         duration: 1.6,
         ease: 'power2.inOut',
         onComplete: () => {
-          card.style.display = 'none';
+          card.style.visibility = 'hidden';
+          card.style.pointerEvents = 'none';
           playReliveOverlay();
         }
       });
