@@ -200,6 +200,94 @@ function initScrollAnimations() {
     });
   });
 
+  // Our Journey cards sequential fade-in and 3D tilt
+  const journeyCards = document.querySelectorAll('.journey-card-wrapper');
+  journeyCards.forEach((card) => {
+    gsap.to(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power3.out'
+    });
+
+    const innerCard = card.querySelector('.journey-card');
+    if (innerCard) {
+      innerCard.addEventListener('mousemove', (e) => {
+        const rect = innerCard.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        innerCard.style.transform = `perspective(800px) rotateX(${-(y / rect.height) * 10}deg) rotateY(${(x / rect.width) * 10}deg) scale(1.03)`;
+      });
+      innerCard.addEventListener('mouseleave', () => {
+        innerCard.style.transform = '';
+      });
+    }
+  });
+
+  // Our Journey Ending typing effect
+  const endingCard = document.getElementById('journey-ending-card');
+  const endingTextEl = document.getElementById('journey-typed-ending');
+  const endingSigEl = document.getElementById('journey-typed-signature');
+  let endingTriggered = false;
+
+  if (endingCard && endingTextEl && endingSigEl) {
+    ScrollTrigger.create({
+      trigger: endingCard,
+      start: 'top 75%',
+      onEnter: () => {
+        if (endingTriggered) return;
+        endingTriggered = true;
+
+        const line1 = "No matter what happens next...";
+        const line2 = "Thank you for being part of my story.";
+        const sig = "Siddharth ❤️";
+
+        let idx1 = 0;
+        function typeLine1() {
+          if (idx1 < line1.length) {
+            endingTextEl.textContent += line1.charAt(idx1);
+            idx1++;
+            setTimeout(typeLine1, 60);
+          } else {
+            setTimeout(() => {
+              endingTextEl.textContent += "\n\n";
+              typeLine2();
+            }, 1200);
+          }
+        }
+
+        let idx2 = 0;
+        function typeLine2() {
+          if (idx2 < line2.length) {
+            endingTextEl.textContent += line2.charAt(idx2);
+            idx2++;
+            setTimeout(typeLine2, 60);
+          } else {
+            setTimeout(() => {
+              typeSig();
+            }, 1200);
+          }
+        }
+
+        let idxSig = 0;
+        function typeSig() {
+          if (idxSig < sig.length) {
+            endingSigEl.textContent += sig.charAt(idxSig);
+            idxSig++;
+            setTimeout(typeSig, 80);
+          }
+        }
+
+        typeLine1();
+      }
+    });
+  }
+
   // Page 8: Apology letter fade in
   gsap.from('#page-8 .vintage-letter', {
     scrollTrigger: {
@@ -213,6 +301,7 @@ function initScrollAnimations() {
     ease: 'power3.out'
   });
 }
+
 
 /* ==========================================================================
    6. POLAROID 3D TILT & HOVER EFFECT
