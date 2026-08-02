@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger);
 
   initCursor();
-  initLandingSequence();
+  initCinematicIntroSequence();
   initAudioToggle();
-  initPage1Typing();
   initScrollAnimations();
   initCinematicApologyScene();
   initPolaroids();
@@ -43,38 +42,32 @@ function initCursor() {
 /* ==========================================================================
    2. LANDING SCREEN SEQUENCE
    ========================================================================== */
-function initLandingSequence() {
-  const subtitleEl = document.getElementById('landing-subtitle-text');
-  const titleEl = document.getElementById('landing-title');
-  const btnEl = document.getElementById('open-btn');
-  const landingScreen = document.getElementById('landing-screen');
+/* ==========================================================================
+   2. CINEMATIC MOVIE INTRODUCTION SEQUENCE
+   ========================================================================== */
+function initCinematicIntroSequence() {
+  const startBtn = document.getElementById('intro-start-btn');
+  const startOverlay = document.getElementById('intro-start-overlay');
   const audioBtn = document.getElementById('audio-toggle-btn');
 
-  const phrase = "For Someone Very Special...";
-  let charIdx = 0;
+  const scene2 = document.getElementById('intro-scene-2');
+  const planeWrap = document.querySelector('.intro-airplane-wrap');
+  const s2Heading = document.querySelector('.intro-script-heading');
 
-  // Type letter-by-letter
-  function typeSubtitle() {
-    if (charIdx < phrase.length) {
-      subtitleEl.textContent += phrase.charAt(charIdx);
-      charIdx++;
-      setTimeout(typeSubtitle, 70);
-    } else {
-      // Reveal Title "Himanshi ❤️"
-      setTimeout(() => {
-        titleEl.classList.add('show');
-        setTimeout(() => {
-          btnEl.classList.add('show');
-        }, 800);
-      }, 500);
-    }
-  }
+  const scene3 = document.getElementById('intro-scene-3');
+  const s3Line1 = document.getElementById('s3-line1');
+  const s3Line2 = document.getElementById('s3-line2');
+  const s3Line3 = document.getElementById('s3-line3');
 
-  setTimeout(typeSubtitle, 600);
+  const scene4 = document.getElementById('intro-scene-4');
+  const parchment = document.getElementById('parchment-paper');
+  const inkBody = document.getElementById('ink-content');
 
-  // Click "Please Open This"
-  btnEl.addEventListener('click', () => {
-    // Start Audio
+  const introCanvasEngine = initIntroCanvas();
+
+  if (!startBtn) return;
+
+  startBtn.addEventListener('click', () => {
     if (window.romanticAudio) {
       window.romanticAudio.start();
     }
@@ -82,72 +75,258 @@ function initLandingSequence() {
       audioBtn.classList.add('visible');
     }
 
-    // Fade out Landing Screen
-    landingScreen.classList.add('fade-out');
+    gsap.to(startOverlay, {
+      opacity: 0,
+      duration: 1.2,
+      onComplete: () => {
+        startOverlay.style.display = 'none';
+        
+        // SCENE 1: Moon rises, starry night, fireflies. 5 Seconds NO text.
+        if (introCanvasEngine && introCanvasEngine.startMoonRise) {
+          introCanvasEngine.startMoonRise();
+        }
 
-    // Scroll to Page 1
-    setTimeout(() => {
-      document.getElementById('page-1').scrollIntoView({ behavior: 'smooth' });
-    }, 400);
+        setTimeout(() => {
+          playScene2();
+        }, 5000);
+      }
+    });
   });
-}
 
-/* ==========================================================================
-   3. AUDIO TOGGLE BUTTON
-   ========================================================================== */
-function initAudioToggle() {
-  const audioBtn = document.getElementById('audio-toggle-btn');
-  if (!audioBtn) return;
+  // SCENE 2: Paper Airplane & Handwritten Text
+  function playScene2() {
+    scene2.style.display = 'flex';
 
-  audioBtn.addEventListener('click', () => {
-    if (window.romanticAudio) {
-      const playing = window.romanticAudio.toggle();
-      audioBtn.style.color = playing ? '#ffd700' : 'rgba(255,255,255,0.4)';
-    }
-  });
-}
+    gsap.fromTo(planeWrap, 
+      { x: '-10vw', y: '60vh', opacity: 0, rotate: -15 },
+      { x: '110vw', y: '20vh', opacity: 1, rotate: 10, duration: 4.5, ease: 'power1.inOut' }
+    );
 
-/* ==========================================================================
-   4. PAGE 1: TYPING EFFECT FOR HANDWRITTEN LETTER
-   ========================================================================== */
-function initPage1Typing() {
-  const letterTextContainer = document.getElementById('page1-typed-letter');
-  if (!letterTextContainer) return;
-
-  const letterText = `Dear Himanshi,
-
-I don't know why you're upset with me, but I can feel the distance between us.
-
-Maybe I made mistakes that hurt you.
-Maybe I didn't understand your feelings.
-
-Whatever the reason is...
-I genuinely want to understand.
-
-If I hurt you...
-I'm truly sorry.`;
-
-  let typedIndex = 0;
-  let hasTyped = false;
-
-  ScrollTrigger.create({
-    trigger: '#page-1',
-    start: 'top 60%',
-    onEnter: () => {
-      if (hasTyped) return;
-      hasTyped = true;
-
-      function typeNextChar() {
-        if (typedIndex < letterText.length) {
-          letterTextContainer.textContent += letterText.charAt(typedIndex);
-          typedIndex++;
-          setTimeout(typeNextChar, 35);
+    gsap.fromTo(s2Heading,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1.8, delay: 1.0, ease: 'power2.out',
+        onComplete: () => {
+          setTimeout(() => {
+            gsap.to(scene2, {
+              opacity: 0,
+              duration: 1.5,
+              onComplete: () => {
+                scene2.style.display = 'none';
+                playScene3();
+              }
+            });
+          }, 3500);
         }
       }
-      typeNextChar();
+    );
+  }
+
+  // SCENE 3: Moonlight Water Reflection & Typewriter
+  function playScene3() {
+    scene3.style.display = 'flex';
+    const waterLayer = document.getElementById('intro-water-layer');
+    if (waterLayer) waterLayer.classList.add('active');
+
+    const lines = [
+      { el: s3Line1, text: "This isn't a request." },
+      { el: s3Line2, text: "It's simply a story I never got to finish." },
+      { el: s3Line3, text: "And it begins with you..." }
+    ];
+
+    function typeScene3Line(idx) {
+      if (idx < lines.length) {
+        const item = lines[idx];
+        let charIdx = 0;
+        function typeChar() {
+          if (charIdx < item.text.length) {
+            item.el.textContent += item.text.charAt(charIdx);
+            charIdx++;
+            setTimeout(typeChar, 45);
+          } else {
+            const pause = (idx === lines.length - 1) ? 2200 : 1200;
+            setTimeout(() => {
+              typeScene3Line(idx + 1);
+            }, pause);
+          }
+        }
+        typeChar();
+      } else {
+        gsap.to(scene3, {
+          opacity: 0,
+          duration: 1.5,
+          onComplete: () => {
+            scene3.style.display = 'none';
+            playScene4();
+          }
+        });
+      }
     }
-  });
+
+    typeScene3Line(0);
+  }
+
+  // SCENE 4: Vintage Unfolding Paper & Natural Ink Writing
+  function playScene4() {
+    scene4.style.display = 'flex';
+
+    gsap.fromTo(parchment,
+      { opacity: 0, scale: 0.6, rotate: -4 },
+      { opacity: 1, scale: 1, rotate: 0, duration: 1.6, ease: 'back.out(1.4)',
+        onComplete: () => {
+          const letterLines = [
+            "I don't know why we're here today.",
+            "",
+            "But if you're reading this,",
+            "thank you for giving these few minutes a chance."
+          ];
+
+          let lineIdx = 0;
+          function writeNextLine() {
+            if (lineIdx < letterLines.length) {
+              const lineText = letterLines[lineIdx];
+              const p = document.createElement('p');
+              p.className = 'ink-line';
+              inkBody.appendChild(p);
+
+              if (lineText === "") {
+                p.style.minHeight = "1em";
+                lineIdx++;
+                setTimeout(writeNextLine, 300);
+                return;
+              }
+
+              let charIdx = 0;
+              function writeChar() {
+                if (charIdx < lineText.length) {
+                  p.textContent += lineText.charAt(charIdx);
+                  charIdx++;
+                  setTimeout(writeChar, 38);
+                } else {
+                  lineIdx++;
+                  setTimeout(writeNextLine, 400);
+                }
+              }
+              writeChar();
+            } else {
+              setTimeout(() => {
+                const nextTarget = document.getElementById('page-2') || document.getElementById('storybook-section');
+                if (nextTarget) {
+                  nextTarget.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 3000);
+            }
+          }
+
+          writeNextLine();
+        }
+      }
+    );
+  }
 }
+
+// Intro Canvas Engine (Moon Rising, Stars, Fireflies)
+function initIntroCanvas() {
+  const canvas = document.getElementById('intro-canvas');
+  if (!canvas) return null;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let moonY = canvas.height + 80;
+  let targetMoonY = canvas.height * 0.28;
+  let moonRising = false;
+
+  const stars = [];
+  for (let i = 0; i < 160; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.8 + 0.2,
+      vAlpha: (Math.random() - 0.5) * 0.01
+    });
+  }
+
+  const fireflies = [];
+  for (let i = 0; i < 35; i++) {
+    fireflies.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.6,
+      vy: (Math.random() - 0.5) * 0.6,
+      alpha: Math.random() * 0.8 + 0.2,
+      color: Math.random() > 0.5 ? '#ffb7c5' : '#ffd700'
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (moonRising && moonY > targetMoonY) {
+      moonY -= 0.6;
+    }
+
+    ctx.save();
+    ctx.shadowBlur = 60;
+    ctx.shadowColor = 'rgba(255, 246, 214, 0.8)';
+    const moonGrad = ctx.createRadialGradient(canvas.width / 2, moonY, 10, canvas.width / 2, moonY, 50);
+    moonGrad.addColorStop(0, '#ffffff');
+    moonGrad.addColorStop(0.6, '#fff6d6');
+    moonGrad.addColorStop(1, '#ffd700');
+    ctx.fillStyle = moonGrad;
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2, moonY, 50, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    stars.forEach(s => {
+      s.alpha += s.vAlpha;
+      if (s.alpha > 0.9 || s.alpha < 0.2) s.vAlpha = -s.vAlpha;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, s.alpha);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    fireflies.forEach(f => {
+      f.x += f.vx;
+      f.y += f.vy;
+      if (f.x < 0) f.x = canvas.width;
+      if (f.x > canvas.width) f.x = 0;
+      if (f.y < 0) f.y = canvas.height;
+      if (f.y > canvas.height) f.y = 0;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, f.alpha);
+      ctx.fillStyle = f.color;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = f.color;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  return {
+    startMoonRise: () => {
+      moonRising = true;
+    }
+  };
+}
+
 
 /* ==========================================================================
    5. GSAP SCROLLTRIGGER ANIMATIONS
