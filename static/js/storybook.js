@@ -5,6 +5,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger);
 
+  // Disable GSAP ScrollTrigger auto-refresh on mobile vertical resize (address bar toggle)
+  ScrollTrigger.config({
+    autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
+  });
+
   initChapterReveals();
   initChapterCanvases();
 });
@@ -14,6 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================================== */
 function initChapterReveals() {
   const chapterCards = document.querySelectorAll('.chapter-card');
+
+  // Pre-calculate and lock full rendered heights before any animation plays
+  chapterCards.forEach((chapter) => {
+    const glass = chapter.querySelector('.chapter-glass');
+    const text = chapter.querySelector('.chapter-text');
+
+    if (glass) {
+      const glassHeight = glass.getBoundingClientRect().height;
+      if (glassHeight > 0) {
+        glass.style.minHeight = `${Math.ceil(glassHeight)}px`;
+      }
+    }
+    if (text) {
+      const textHeight = text.getBoundingClientRect().height;
+      if (textHeight > 0) {
+        text.style.minHeight = `${Math.ceil(textHeight)}px`;
+      }
+    }
+  });
 
   chapterCards.forEach((chapter) => {
     const glass = chapter.querySelector('.chapter-glass');
@@ -32,32 +56,32 @@ function initChapterReveals() {
 
     if (glass) {
       timeline.fromTo(glass, 
-        { opacity: 0, y: 50, scale: 0.95 }, 
-        { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: 'power3.out' }
+        { opacity: 0, y: 30, scale: 0.96 }, 
+        { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }
       );
     }
 
     if (badge) {
       timeline.fromTo(badge,
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' },
-        "-=0.6"
+        { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.7)' },
+        "-=0.5"
       );
     }
 
     if (title) {
       timeline.fromTo(title,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-        "-=0.4"
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        "-=0.3"
       );
     }
 
     if (paragraphs.length > 0) {
       timeline.fromTo(paragraphs,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.15, ease: 'power2.out' },
-        "-=0.3"
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.12, ease: 'power2.out' },
+        "-=0.2"
       );
     }
   });

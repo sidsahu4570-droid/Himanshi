@@ -5,6 +5,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger);
 
+  // Disable GSAP ScrollTrigger auto-refresh on mobile vertical resize (address bar toggle)
+  ScrollTrigger.config({
+    autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
+  });
+
   initCursor();
   initLandingSequence();
   initAudioToggle();
@@ -204,6 +209,14 @@ function initPage1Typing() {
    5. GSAP SCROLLTRIGGER ANIMATIONS
    ========================================================================== */
 function initScrollAnimations() {
+  // Pre-calculate and lock min-height for all content cards
+  document.querySelectorAll('.timeline-card, .sincere-card, .promise-card, .vintage-letter').forEach(card => {
+    const h = card.getBoundingClientRect().height;
+    if (h > 0) {
+      card.style.minHeight = `${Math.ceil(h)}px`;
+    }
+  });
+
   // Page 2: Timeline cards sequential fade-in
   const timelineCards = document.querySelectorAll('.timeline-card-wrapper');
   timelineCards.forEach((card, idx) => {
@@ -302,6 +315,13 @@ function initFinalLakeSection() {
   const card = document.querySelector('.final-content-card');
 
   if (!section) return;
+
+  if (card) {
+    const cardHeight = card.getBoundingClientRect().height;
+    if (cardHeight > 0) {
+      card.style.minHeight = `${Math.ceil(cardHeight)}px`;
+    }
+  }
 
   // Init Lake Canvas
   initFinalLakeCanvas();
