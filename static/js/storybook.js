@@ -20,20 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function initChapterReveals() {
   const chapterCards = document.querySelectorAll('.chapter-card');
 
-  // Pre-calculate and lock fixed height once on .chapter-frame-wrapper and Layer 2 background
+  // Pre-calculate and lock fixed height once on every .chapter-glass card
   chapterCards.forEach((chapter) => {
-    const wrapper = chapter.querySelector('.chapter-frame-wrapper');
     const glass = chapter.querySelector('.chapter-glass');
-    const bg = chapter.querySelector('.chapter-glass-bg');
-    const content = chapter.querySelector('.chapter-content-inner') || glass;
-
-    if (wrapper && content) {
-      const fullHeight = content.getBoundingClientRect().height;
+    if (glass) {
+      const fullHeight = glass.getBoundingClientRect().height;
       if (fullHeight > 0) {
-        wrapper.style.height = `${Math.ceil(fullHeight)}px`;
-        wrapper.style.minHeight = `${Math.ceil(fullHeight)}px`;
-        if (glass) glass.style.height = '100%';
-        if (bg) bg.style.height = '100%';
+        glass.style.height = `${Math.ceil(fullHeight)}px`;
+        glass.style.minHeight = `${Math.ceil(fullHeight)}px`;
       }
     }
   });

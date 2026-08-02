@@ -158,16 +158,12 @@ function initPage1Typing() {
     container.style.minHeight = `${Math.ceil(fullHeight)}px`;
   }
 
-  const wrapper = document.querySelector('.letter-frame-wrap');
-  const cardBg = document.querySelector('.letter-glass-bg');
   const card = document.querySelector('.letter-card');
-  if (wrapper && card) {
+  if (card) {
     const cardFullHeight = card.getBoundingClientRect().height;
     if (cardFullHeight > 0) {
-      wrapper.style.height = `${Math.ceil(cardFullHeight)}px`;
-      wrapper.style.minHeight = `${Math.ceil(cardFullHeight)}px`;
-      if (cardBg) cardBg.style.height = '100%';
-      card.style.height = '100%';
+      card.style.height = `${Math.ceil(cardFullHeight)}px`;
+      card.style.minHeight = `${Math.ceil(cardFullHeight)}px`;
     }
   }
 
@@ -689,15 +685,11 @@ function initCinematicApologyScene() {
     });
   }
 
-  const wrapper = document.querySelector('.cinematic-frame-wrap');
-  const cardBg = document.querySelector('.cinematic-glass-bg');
-  if (wrapper && card) {
+  if (card) {
     const cardFullHeight = card.getBoundingClientRect().height;
     if (cardFullHeight > 0) {
-      wrapper.style.height = `${Math.ceil(cardFullHeight)}px`;
-      wrapper.style.minHeight = `${Math.ceil(cardFullHeight)}px`;
-      if (cardBg) cardBg.style.height = '100%';
-      card.style.height = '100%';
+      card.style.height = `${Math.ceil(cardFullHeight)}px`;
+      card.style.minHeight = `${Math.ceil(cardFullHeight)}px`;
     }
   }
 
