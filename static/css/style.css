@@ -407,10 +407,28 @@ body {
 .typed-text-body {
   font-family: var(--font-serif);
   font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  line-height: 1.9;
+  line-height: 1.95;
   color: var(--color-white-soft);
   min-height: 220px;
-  white-space: pre-line;
+}
+
+.typed-text-body .typed-para {
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+
+.typed-text-body .typed-para:last-of-type {
+  margin-bottom: 0;
+}
+
+.typed-text-body .letter-signature {
+  font-family: var(--font-script);
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  color: var(--color-pink-soft);
+  text-align: right;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
 }
 
 .scroll-indicator {

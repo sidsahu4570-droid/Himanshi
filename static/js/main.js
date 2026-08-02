@@ -110,50 +110,66 @@ function initAudioToggle() {
    4. PAGE 1: TYPING EFFECT FOR HANDWRITTEN LETTER
    ========================================================================== */
 function initPage1Typing() {
-  const letterTextContainer = document.getElementById('page1-typed-letter');
-  if (!letterTextContainer) return;
+  const container = document.getElementById('page1-typed-letter');
+  if (!container) return;
 
-  const letterText = `Three years ago, a simple message became the beginning of a story that I still remember.
+  const paragraphs = [
+    "Three years ago, one simple message started something I'll always remember.",
+    "At first, I rushed my feelings, and I understand now that I should have given you more time and more space.",
+    "Life took us in different directions, but somehow we found our way back to talking again. We spoke about dreams, careers, mountains, cars, Dubai, Disneyland, birthdays, and so many random little moments that slowly became memories I'll never forget.",
+    "Then one day, I made the biggest mistake of all.",
+    "Instead of being patient, I let my frustration become anger.",
+    "I raised my voice at someone who had always deserved kindness and respect.",
+    "There is no excuse for that.",
+    "This website isn't here to change your mind or make you feel guilty.",
+    "I created it because I wanted to take responsibility, apologise sincerely, and thank you for every conversation we shared.",
+    "If nothing else, I hope you know that every word written here comes from my heart.",
+    "— Siddharth"
+  ];
 
-At first, I was too quick to express my feelings. Looking back, I understand that I should have been more patient, and if that made you uncomfortable, I'm truly sorry.
-
-Life gave us another chance to talk again. We shared our dreams, our careers, the places we wanted to visit, the cars we loved, the adventures we imagined, and countless conversations that slowly became some of my favourite memories.
-
-Today, this website isn't an attempt to change your mind or make you feel guilty.
-
-I made it because I wanted to say something I never expressed properly.
-
-I'm sorry for the moments where I hurt you, especially the day I raised my voice.
-
-I can't change what happened, but I can take responsibility for it.
-
-Everything you'll read below is simply our story, told through the memories that have stayed with me.
-
-Thank you for taking the time to read it.
-
-— Siddharth`;
-
-
-  let typedIndex = 0;
-  let hasTyped = false;
+  let hasStarted = false;
 
   ScrollTrigger.create({
     trigger: '#page-1',
     start: 'top 60%',
     onEnter: () => {
-      if (hasTyped) return;
-      hasTyped = true;
-
-      function typeNextChar() {
-        if (typedIndex < letterText.length) {
-          letterTextContainer.textContent += letterText.charAt(typedIndex);
-          typedIndex++;
-          setTimeout(typeNextChar, 35);
-        }
-      }
-      typeNextChar();
+      if (hasStarted) return;
+      hasStarted = true;
+      typeParagraph(0);
     }
   });
+
+  function typeParagraph(pIndex) {
+    if (pIndex >= paragraphs.length) return;
+
+    const isSignature = pIndex === paragraphs.length - 1;
+    const pEl = document.createElement(isSignature ? 'div' : 'p');
+    if (isSignature) {
+      pEl.className = 'letter-signature';
+    } else {
+      pEl.className = 'typed-para';
+    }
+    container.appendChild(pEl);
+
+    const text = paragraphs[pIndex];
+    let charIndex = 0;
+
+    function typeChar() {
+      if (charIndex < text.length) {
+        pEl.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, 32);
+      } else {
+        // Pause briefly between paragraphs
+        const pauseTime = isSignature ? 500 : 700;
+        setTimeout(() => {
+          typeParagraph(pIndex + 1);
+        }, pauseTime);
+      }
+    }
+
+    typeChar();
+  }
 }
 
 /* ==========================================================================
