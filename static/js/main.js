@@ -287,6 +287,8 @@ function initFinalLakeSection() {
   // Init Lake Canvas
   initFinalLakeCanvas();
 
+  let glowTimer = null;
+
   // ScrollTrigger for Section Fade-in & Audio softening
   ScrollTrigger.create({
     trigger: section,
@@ -302,6 +304,16 @@ function initFinalLakeSection() {
           { opacity: 0, y: 40, scale: 0.95 },
           { opacity: 1, y: 0, scale: 1, duration: 1.8, ease: 'power3.out' }
         );
+      }
+
+      // After 5 seconds of no interaction, softly glow the button once to draw gentle attention
+      if (msgBtn) {
+        glowTimer = setTimeout(() => {
+          msgBtn.classList.add('gentle-glow-once');
+          setTimeout(() => {
+            msgBtn.classList.remove('gentle-glow-once');
+          }, 3000);
+        }, 5000);
       }
     }
   });

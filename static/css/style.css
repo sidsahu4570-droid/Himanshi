@@ -1310,16 +1310,31 @@ body {
 
 .final-short-body p {
   font-family: var(--font-serif);
-  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  font-size: clamp(1.05rem, 2.3vw, 1.3rem);
   line-height: 1.8;
   color: var(--color-white-soft);
   margin-bottom: 12px;
 }
 
+.final-short-body .final-sub-group {
+  color: var(--color-lavender);
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
 .final-short-body .final-highlight-line {
   color: var(--color-pink-soft);
   font-style: italic;
+  margin-top: 14px;
   margin-bottom: 16px;
+}
+
+.final-bullet-note p {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-dim);
+  margin-bottom: 4px !important;
 }
 
 .final-heart-sig {
@@ -1327,13 +1342,13 @@ body {
   font-size: clamp(2.4rem, 5vw, 3rem);
   color: var(--color-pink-soft);
   text-align: right;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 16px;
+  margin-bottom: 8px;
   text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
 }
 
 .final-btn-wrapper {
-  margin: 28px 0 18px 0;
+  margin: 24px 0 8px 0;
   display: flex;
   justify-content: center;
 }
@@ -1357,24 +1372,16 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25);
   overflow: hidden;
   transition: all 0.4s var(--transition-smooth);
-  animation: heartbeatGlow 8s infinite ease-in-out;
 }
 
-@keyframes heartbeatGlow {
-  0%, 90%, 100% {
-    transform: scale(1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25);
-  }
-  93% {
-    transform: scale(1.06);
-    box-shadow: 0 15px 40px rgba(255, 107, 139, 0.5), 0 0 35px rgba(255, 215, 0, 0.45);
-  }
-  96% {
-    transform: scale(1.02);
-  }
-  98% {
-    transform: scale(1.05);
-  }
+@keyframes gentleGlowPulse {
+  0% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25); }
+  50% { transform: scale(1.08); box-shadow: 0 15px 45px rgba(255, 183, 197, 0.7), 0 0 40px rgba(255, 215, 0, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.25); }
+}
+
+.glass-message-btn.gentle-glow-once {
+  animation: gentleGlowPulse 2.5s ease-in-out forwards !important;
 }
 
 .glass-message-btn:hover {
