@@ -126,6 +126,38 @@ function initPage1Typing() {
     "— Siddharth"
   ];
 
+  // 1. Pre-render full text to calculate exact final height
+  container.innerHTML = '';
+  const createdElements = [];
+  paragraphs.forEach((text, pIndex) => {
+    const isSignature = pIndex === paragraphs.length - 1;
+    const isWilling = text === "If you're willing..." || text === "keep scrolling.";
+    const pEl = document.createElement(isSignature ? 'div' : 'p');
+
+    if (isSignature) {
+      pEl.className = 'letter-signature';
+    } else if (isWilling) {
+      pEl.className = 'typed-para paragraph-italic';
+    } else {
+      pEl.className = 'typed-para';
+    }
+
+    pEl.textContent = text;
+    container.appendChild(pEl);
+    createdElements.push(pEl);
+  });
+
+  // 2. Measure exact full height and set minHeight on container immediately
+  const fullHeight = container.getBoundingClientRect().height;
+  if (fullHeight > 0) {
+    container.style.minHeight = `${Math.ceil(fullHeight)}px`;
+  }
+
+  // 3. Clear text content for typing animation while keeping minHeight reserved
+  createdElements.forEach(el => {
+    el.textContent = '';
+  });
+
   let hasStarted = false;
 
   ScrollTrigger.create({
@@ -147,20 +179,7 @@ function initPage1Typing() {
       return;
     }
 
-    const isSignature = pIndex === paragraphs.length - 1;
-    const isWilling = paragraphs[pIndex] === "If you're willing..." || paragraphs[pIndex] === "keep scrolling.";
-    const pEl = document.createElement(isSignature ? 'div' : 'p');
-
-    if (isSignature) {
-      pEl.className = 'letter-signature';
-    } else if (isWilling) {
-      pEl.className = 'typed-para paragraph-italic';
-    } else {
-      pEl.className = 'typed-para';
-    }
-
-    container.appendChild(pEl);
-
+    const pEl = createdElements[pIndex];
     const text = paragraphs[pIndex];
     let charIndex = 0;
 
@@ -170,8 +189,7 @@ function initPage1Typing() {
         charIndex++;
         setTimeout(typeChar, 35);
       } else {
-        // Pause briefly between paragraphs
-        const pauseTime = isSignature ? 500 : 450;
+        const pauseTime = (pIndex === paragraphs.length - 1) ? 500 : 450;
         setTimeout(() => {
           typeParagraph(pIndex + 1);
         }, pauseTime);
@@ -620,6 +638,23 @@ function initCinematicApologyScene() {
     { id: 'line-4', text: "Not raised voices." },
     { id: 'line-5', text: "I'm deeply sorry." }
   ];
+
+  // Pre-calculate full rendered height to stabilize layout completely
+  const typeContainer = document.getElementById('cinematic-typewriter-container');
+  if (typeContainer) {
+    sentences.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) el.textContent = s.text;
+    });
+    const fullHeight = typeContainer.getBoundingClientRect().height;
+    if (fullHeight > 0) {
+      typeContainer.style.minHeight = `${Math.ceil(fullHeight)}px`;
+    }
+    sentences.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) el.textContent = '';
+    });
+  }
 
   let hasStarted = false;
 
