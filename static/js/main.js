@@ -1,5 +1,5 @@
 /* ==========================================================================
-   A LETTER FOR HIMANSHI - Main Application Controller (GSAP Documentary)
+   A LETTER FOR HIMANSHI - Main Application Controller (GSAP + Interactions)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,8 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursor();
   initLandingSequence();
   initAudioToggle();
-  initDocumentaryChapters();
-  initFinalDocumentaryChapter();
+  initPage1Typing();
+  initScrollAnimations();
+  initPolaroids();
+  initFinalButton();
 });
 
 /* ==========================================================================
@@ -50,12 +52,14 @@ function initLandingSequence() {
   const phrase = "For Someone Very Special...";
   let charIdx = 0;
 
+  // Type letter-by-letter
   function typeSubtitle() {
     if (charIdx < phrase.length) {
       subtitleEl.textContent += phrase.charAt(charIdx);
       charIdx++;
       setTimeout(typeSubtitle, 70);
     } else {
+      // Reveal Title "Himanshi ❤️"
       setTimeout(() => {
         titleEl.classList.add('show');
         setTimeout(() => {
@@ -67,7 +71,9 @@ function initLandingSequence() {
 
   setTimeout(typeSubtitle, 600);
 
+  // Click "Please Open This"
   btnEl.addEventListener('click', () => {
+    // Start Audio
     if (window.romanticAudio) {
       window.romanticAudio.start();
     }
@@ -75,10 +81,12 @@ function initLandingSequence() {
       audioBtn.classList.add('visible');
     }
 
+    // Fade out Landing Screen
     landingScreen.classList.add('fade-out');
 
+    // Scroll to Page 1
     setTimeout(() => {
-      document.getElementById('chap-1').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('page-1').scrollIntoView({ behavior: 'smooth' });
     }, 400);
   });
 }
@@ -99,135 +107,146 @@ function initAudioToggle() {
 }
 
 /* ==========================================================================
-   4. DOCUMENTARY CHAPTERS SCROLL & 3D TILT
+   4. PAGE 1: TYPING EFFECT FOR HANDWRITTEN LETTER
    ========================================================================== */
-function initDocumentaryChapters() {
-  const chapters = document.querySelectorAll('.doc-chapter');
+function initPage1Typing() {
+  const letterTextContainer = document.getElementById('page1-typed-letter');
+  if (!letterTextContainer) return;
 
-  chapters.forEach((chap) => {
-    const card = chap.querySelector('.chap-card');
-    const badge = chap.querySelector('.chap-badge');
-    const title = chap.querySelector('.chap-title');
+  const letterText = `Dear Himanshi,
 
-    if (badge) {
-      gsap.from(badge, {
-        scrollTrigger: {
-          trigger: chap,
-          start: 'top 75%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.8,
-        ease: 'back.out(1.7)'
-      });
-    }
+I don't know why you're upset with me, but I can feel the distance between us.
 
-    if (title) {
-      gsap.from(title, {
-        scrollTrigger: {
-          trigger: chap,
-          start: 'top 75%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        y: -30,
-        duration: 1,
-        delay: 0.15,
-        ease: 'power3.out'
-      });
-    }
+Maybe I made mistakes that hurt you.
+Maybe I didn't understand your feelings.
 
-    if (card) {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: chap,
-          start: 'top 70%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        y: 50,
-        scale: 0.95,
-        duration: 1.2,
-        delay: 0.3,
-        ease: 'power3.out'
-      });
+Whatever the reason is...
+I genuinely want to understand.
 
-      // 3D Card Hover Tilt
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        card.style.transform = `perspective(1000px) rotateX(${-(y / rect.height) * 8}deg) rotateY(${(x / rect.width) * 8}deg) scale(1.02)`;
-      });
+If I hurt you...
+I'm truly sorry.`;
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
+  let typedIndex = 0;
+  let hasTyped = false;
+
+  ScrollTrigger.create({
+    trigger: '#page-1',
+    start: 'top 60%',
+    onEnter: () => {
+      if (hasTyped) return;
+      hasTyped = true;
+
+      function typeNextChar() {
+        if (typedIndex < letterText.length) {
+          letterTextContainer.textContent += letterText.charAt(typedIndex);
+          typedIndex++;
+          setTimeout(typeNextChar, 35);
+        }
+      }
+      typeNextChar();
     }
   });
 }
 
 /* ==========================================================================
-   5. FINAL DOCUMENTARY CHAPTER & TYPING LETTER
+   5. GSAP SCROLLTRIGGER ANIMATIONS
    ========================================================================== */
-function initFinalDocumentaryChapter() {
-  const finalCard = document.getElementById('chap-final');
-  const typedTextEl = document.getElementById('final-typed-doc');
-  const signatureEl = document.getElementById('final-doc-signature');
-  let finalTriggered = false;
+function initScrollAnimations() {
+  // Page 2: Timeline cards sequential fade-in
+  const timelineCards = document.querySelectorAll('.timeline-card-wrapper');
+  timelineCards.forEach((card, idx) => {
+    gsap.to(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      },
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      delay: idx * 0.2,
+      ease: 'power3.out'
+    });
+  });
 
-  if (!finalCard || !typedTextEl || !signatureEl) return;
+  // Page 3: Sincere Card Fade
+  gsap.from('#page-3 .sincere-card', {
+    scrollTrigger: {
+      trigger: '#page-3',
+      start: 'top 70%',
+      toggleActions: 'play none none reverse'
+    },
+    opacity: 0,
+    scale: 0.9,
+    duration: 1.2,
+    ease: 'power3.out'
+  });
 
-  ScrollTrigger.create({
-    trigger: finalCard,
-    start: 'top 65%',
-    onEnter: () => {
-      if (finalTriggered) return;
-      finalTriggered = true;
+  // Page 5: Promises blooming sequential reveal
+  const promiseCards = document.querySelectorAll('.promise-card');
+  promiseCards.forEach((card, idx) => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse'
+      },
+      opacity: 0,
+      y: 40,
+      scale: 0.85,
+      duration: 0.9,
+      delay: idx * 0.25,
+      ease: 'back.out(1.7)'
+    });
+  });
 
-      // Soften piano background audio
-      if (window.romanticAudio && window.romanticAudio.masterGain && window.romanticAudio.audioCtx) {
-        try {
-          window.romanticAudio.masterGain.gain.linearRampToValueAtTime(0.05, window.romanticAudio.audioCtx.currentTime + 5);
-        } catch (e) {}
-      }
+  // Page 8: Apology letter fade in
+  gsap.from('#page-8 .vintage-letter', {
+    scrollTrigger: {
+      trigger: '#page-8',
+      start: 'top 75%',
+      toggleActions: 'play none none reverse'
+    },
+    opacity: 0,
+    y: 50,
+    duration: 1.2,
+    ease: 'power3.out'
+  });
+}
 
-      // Enable canvas cinematic visual enhancements
-      if (window.bgEngine && typeof window.bgEngine.enableCinematicEnding === 'function') {
-        window.bgEngine.enableCinematicEnding();
-      }
+/* ==========================================================================
+   6. POLAROID 3D TILT & HOVER EFFECT
+   ========================================================================== */
+function initPolaroids() {
+  const polaroids = document.querySelectorAll('.polaroid-frame');
+  polaroids.forEach(p => {
+    p.addEventListener('mousemove', (e) => {
+      const rect = p.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
 
-      const letter = `Thank you for every conversation,
-every dream,
-every memory,
-and every moment we shared.
+      const tiltX = (y / rect.height) * 15;
+      const tiltY = -(x / rect.width) * 15;
 
-I don't know what tomorrow holds.
+      p.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.06)`;
+    });
 
-I only wanted to tell you that I'm genuinely sorry.
+    p.addEventListener('mouseleave', () => {
+      p.style.transform = '';
+    });
+  });
+}
 
-Whatever you choose,
-I'll respect it.
+/* ==========================================================================
+   7. FINAL PAGE BUTTON - HEART SHOWER EXPLOSION
+   ========================================================================== */
+function initFinalButton() {
+  const finalBtn = document.getElementById('final-heart-btn');
+  if (!finalBtn) return;
 
-Thank you for reading this.`;
-
-      let charIdx = 0;
-
-      function typeLetter() {
-        if (charIdx < letter.length) {
-          typedTextEl.textContent += letter.charAt(charIdx);
-          charIdx++;
-          setTimeout(typeLetter, 45);
-        } else {
-          // Reveal signature after letter finishes typing
-          setTimeout(() => {
-            signatureEl.classList.add('show');
-          }, 1000);
-        }
-      }
-
-      typeLetter();
+  finalBtn.addEventListener('click', () => {
+    if (typeof window.triggerHeartShower === 'function') {
+      window.triggerHeartShower();
     }
   });
 }

@@ -36,6 +36,9 @@
   <!-- Global Dynamic Canvas Background -->
   <canvas id="global-canvas"></canvas>
 
+  <!-- Heart & Star Particle Shower Canvas for Final Page -->
+  <canvas id="heart-shower-canvas"></canvas>
+
   <!-- LANDING SCREEN OVERLAY -->
   <section id="landing-screen">
     <div class="landing-content">
@@ -53,235 +56,151 @@
   <!-- MAIN SCENE CONTAINER -->
   <main>
 
-    <!-- CHAPTER 1: THREE YEARS AGO... -->
-    <section id="chap-1" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 1</div>
-      <h2 class="chap-title">Three Years Ago...</h2>
-      <div class="glass-card chap-card">
-        <div class="chap-anim airplane-anim">
-          <span class="paper-airplane">✈️</span>
-        </div>
-        <div class="chap-text">
-          Three years ago we started talking.<br><br>
-          Very soon I expressed my feelings.<br><br>
-          You became upset and stopped talking to me.<br><br>
-          Even though it ended quickly, I never forgot those conversations or the dreams we shared.
-        </div>
+    <!-- PAGE 1: SUNSET & HANDWRITTEN TYPING LETTER -->
+    <section id="page-1" class="page-section">
+      <div class="glass-card letter-card">
+        <h2 class="letter-header">Dear Himanshi,</h2>
+        <div id="page1-typed-letter" class="typed-text-body"></div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll Down</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+        </svg>
       </div>
     </section>
 
-    <!-- CHAPTER 2: AFTER TWO YEARS... -->
-    <section id="chap-2" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 2</div>
-      <h2 class="chap-title">After Two Years...</h2>
-      <div class="glass-card chap-card">
-        <div class="chap-anim calendar-anim">
-          <div class="calendar-flipper">
-            <span class="cal-year">2021</span>
-            <span class="cal-arrow">➔</span>
-            <span class="cal-year active">2024</span>
+    <!-- PAGE 2: TIMELINE - I ACCEPT MY MISTAKE -->
+    <section id="page-2" class="page-section">
+      <h2 class="section-title">I Accept My Mistake</h2>
+      <p class="section-subtitle">Taking full responsibility for my actions...</p>
+
+      <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <!-- Card 1 -->
+        <div class="timeline-card-wrapper left">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "I should have listened more."
           </div>
         </div>
-        <div class="chap-text">
-          After two years I finally gathered the courage to message you again after your birthday.<br><br>
-          You replied.<br><br>
-          We started talking again.<br><br>
-          It felt like getting another chance to know you.
+
+        <!-- Card 2 -->
+        <div class="timeline-card-wrapper right">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "I shouldn't have raised my voice."
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="timeline-card-wrapper left">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "I'm really sorry for yelling at you."
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="timeline-card-wrapper right">
+          <div class="timeline-dot"></div>
+          <div class="glass-card mistake-card">
+            "You deserved patience, not anger."
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 3: OUR LATE NIGHT CONVERSATIONS -->
-    <section id="chap-3" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 3</div>
-      <h2 class="chap-title">Our Late Night Conversations</h2>
-      <div class="glass-card chap-card campfire-card">
-        <div class="chap-anim firefly-campfire-anim">
-          <span class="firefly f1">✨</span>
-          <span class="campfire-icon">🏕️</span>
-          <span class="firefly f2">✨</span>
+    <!-- PAGE 3: AURORA & FLOATING LANTERNS -->
+    <section id="page-3" class="page-section">
+      <h2 class="section-title">I Never Wanted To Hurt You</h2>
+      <div class="glass-card sincere-card">
+        <p class="sincere-paragraph">
+          "I know saying sorry doesn't erase what happened.<br><br>
+          But I hope it shows that I truly regret it.<br><br>
+          I wish I could go back and change that moment.<br><br>
+          If I could, I would choose <span class="highlight-text">kindness</span> every single time."
+        </p>
+      </div>
+    </section>
+
+    <!-- PAGE 4: GIANT GLOWING PULSING HEART -->
+    <section id="page-4" class="page-section">
+      <div class="heart-container">
+        <svg class="glowing-heart-svg" viewBox="0 0 100 100">
+          <path fill="url(#heart-grad)" d="M50,92 C47,89 8,55 8,28 C8,14 19,4 33,4 C42,4 49,9.5 50,11 C51,9.5 58,4 67,4 C81,4 92,14 92,28 C92,55 53,89 50,92 Z"/>
+          <defs>
+            <linearGradient id="heart-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff6b8b" />
+              <stop offset="50%" stop-color="#ff3366" />
+              <stop offset="100%" stop-color="#ffd700" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="heart-center-text">I'm Sorry ❤️</span>
+      </div>
+    </section>
+
+    <!-- PAGE 5: THREE ANIMATED PROMISES -->
+    <section id="page-5" class="page-section">
+      <h2 class="section-title">If You'll Give Me One Chance</h2>
+      <p class="section-subtitle">Three sincere promises I hold in my heart</p>
+
+      <div class="promises-grid">
+        <div class="glass-card promise-card">
+          <div class="flower-icon">🌸</div>
+          <p class="promise-text">"I'll listen before reacting."</p>
         </div>
-        <div class="chap-text">
-          We talked about going to the mountains.<br><br>
-          Watching the moon.<br><br>
-          Talking for hours.<br><br>
-          You said you were scared of insects.<br><br>
-          <span class="highlight-text">I jokingly said I'd stay awake so you could sleep peacefully.</span>
+        <div class="glass-card promise-card">
+          <div class="flower-icon">🌸</div>
+          <p class="promise-text">"I'll respect your feelings."</p>
+        </div>
+        <div class="glass-card promise-card">
+          <div class="flower-icon">🌸</div>
+          <p class="promise-text">"I'll become a better person."</p>
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 4: CARS -->
-    <section id="chap-4" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 4</div>
-      <h2 class="chap-title">Cars</h2>
-      <div class="glass-card chap-card garage-card">
-        <div class="chap-anim car-headlights-anim">
-          <span class="sports-car">🏎️</span>
-          <span class="glow-lights">✨</span>
+
+
+    <!-- PAGE 8: THE VINTAGE APOLOGY LETTER -->
+    <section id="page-8" class="page-section">
+      <div class="vintage-letter">
+        <div class="vintage-letter-content">
+Himanshi,
+
+I know I cannot force you to forgive me.
+I only wanted you to know that I'm truly sorry.
+
+I regret yelling at you.
+I regret hurting someone who means so much to me.
+
+Whether you forgive me today, tomorrow, or never,
+I'll always respect your feelings.
+
+Thank you for reading this.
         </div>
-        <div class="chap-text">
-          We talked about cars.<br><br>
-          I still remember your favourite <span class="highlight-text">Porsche Panamera</span>.<br><br>
-          I loved how we could spend hours talking about random things.
-        </div>
+        <div class="signature">— Siddharth ❤️</div>
       </div>
     </section>
 
-    <!-- CHAPTER 5: THE PHOTOS -->
-    <section id="chap-5" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 5</div>
-      <h2 class="chap-title">The Photos</h2>
-      <div class="glass-card chap-card">
-        <div class="chap-anim camera-anim">
-          <span class="camera-icon">📸</span>
-        </div>
-        <div class="chap-text">
-          I once told you I wasn't good at taking pictures.<br><br>
-          You smiled and said,<br><br>
-          <span class="quote-dialogue">"Don't worry. I'll teach you."</span><br><br>
-          That sentence stayed with me.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 6: OUR FIRST MEETING -->
-    <section id="chap-6" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 6</div>
-      <h2 class="chap-title">Our First Meeting</h2>
-      <div class="glass-card chap-card sunset-meet-card">
-        <div class="chap-anim meeting-anim">
-          <span class="sun-icon">🌅</span>
-        </div>
-        <div class="chap-text">
-          We imagined meeting someday.<br><br>
-          I asked what I should wear.<br><br>
-          You simply said,<br><br>
-          <span class="quote-dialogue">"Come just as you are."</span><br><br>
-          That answer meant more than you probably realized.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 7: MY BIRTHDAY -->
-    <section id="chap-7" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 7</div>
-      <h2 class="chap-title">My Birthday</h2>
-      <div class="glass-card chap-card highway-card">
-        <div class="chap-anim drive-anim">
-          <span class="drive-car">🚗</span>
-        </div>
-        <div class="chap-text">
-          We even imagined spending my birthday together.<br><br>
-          You would drive my car.<br><br>
-          We would spend the whole day together.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 8: DUBAI -->
-    <section id="chap-8" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 8</div>
-      <h2 class="chap-title">Dubai</h2>
-      <div class="glass-card chap-card dubai-card">
-        <div class="chap-anim skydiving-anim">
-          <span class="dubai-tower">🏙️</span>
-          <span class="plane-icon">✈️</span>
-        </div>
-        <div class="chap-text">
-          You wanted to go skydiving.<br><br>
-          I admitted I was scared of heights.<br><br>
-          You kept encouraging me until I finally said,<br><br>
-          <span class="quote-dialogue">"If you're jumping with me... I'll jump too."</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 9: DISNEYLAND -->
-    <section id="chap-9" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 9</div>
-      <h2 class="chap-title">Disneyland</h2>
-      <div class="glass-card chap-card disney-card">
-        <div class="chap-anim disney-anim">
-          <span class="ferris-icon">🎡</span>
-          <span class="sparkle-icon">🎆</span>
-        </div>
-        <div class="chap-text">
-          We imagined riding roller coasters together.<br><br>
-          Even though I was scared,<br><br>
-          you somehow convinced me.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 10: MY BIGGEST REGRET -->
-    <section id="chap-10" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 10</div>
-      <h2 class="chap-title">My Biggest Regret</h2>
-      <div class="glass-card chap-card rain-regret-card">
-        <div class="chap-anim rain-drop-anim">
-          <span class="drop d1">💧</span>
-          <span class="drop d2">💧</span>
-        </div>
-        <div class="chap-text">
-          There was a conversation where I asked something in the wrong way.<br><br>
-          My intention wasn't what my words suggested.<br><br>
-          Looking back, I wish I had expressed myself better.<br><br>
-          I'm truly sorry if that made you uncomfortable.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 11: NAVRATRI -->
-    <section id="chap-11" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 11</div>
-      <h2 class="chap-title">Navratri</h2>
-      <div class="glass-card chap-card navratri-card">
-        <div class="chap-anim garba-anim">
-          <span class="light-icon">🪔</span>
-          <span class="light-icon">✨</span>
-        </div>
-        <div class="chap-text">
-          We talked about Garba.<br><br>
-          At that time I said I couldn't come. Later I wondered if I hurt your feelings. If I did, I'm sincerely sorry.<br><br>
-          I became jealous and asked you to hide your story. That came from insecurity, not from a desire to control you.<br><br>
-          I understand now that it wasn't fair, and I'm sorry.
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 12: MY BIGGEST MISTAKE -->
-    <section id="chap-12" class="page-section doc-chapter">
-      <div class="chap-badge">CHAPTER 12</div>
-      <h2 class="chap-title">My Biggest Mistake</h2>
-      <div class="glass-card chap-card mistake-final-card">
-        <div class="chap-anim mist-anim">
-          <span class="moon-cloud">🌙</span>
-        </div>
-        <div class="chap-text">
-          Then came the moment I regret the most.<br><br>
-          I lost my patience.<br><br>
-          I raised my voice.<br><br>
-          No matter how frustrated I felt, I should never have spoken to you that way.<br><br>
-          <span class="highlight-text">I'm deeply sorry for yelling at you.</span><br><br>
-          There is no excuse.
-        </div>
-      </div>
-    </section>
-
-    <!-- FINAL CHAPTER: GRATITUDE & RESPECT -->
-    <section id="chap-final" class="page-section doc-chapter">
-      <div class="chap-badge">FINAL CHAPTER</div>
+    <!-- FINAL PAGE: SNOWFALL, MOON, WHITE ROSE & NO PRESSURE BUTTON -->
+    <section id="page-final" class="page-section">
       <div class="moon-graphic"></div>
       
       <div class="rose-wrapper">
         <span class="rose-icon">🌹</span>
       </div>
 
-      <div class="glass-card final-doc-card">
-        <div id="final-typed-doc" class="final-doc-text"></div>
-        <div id="final-doc-signature" class="final-doc-sig">— Siddharth ❤️</div>
-      </div>
+      <h2 class="final-title">If you ever feel ready...</h2>
+      <p class="final-subtext">I'll always be here to listen.</p>
+
+      <button id="final-heart-btn" class="btn-glow">
+        <span>No Pressure. Just Thank You For Reading.</span>
+        <span class="btn-icon">❤️</span>
+      </button>
     </section>
 
   </main>
@@ -290,5 +209,6 @@
   <script src="{{ url_for('static', filename='js/audio.js') }}"></script>
   <script src="{{ url_for('static', filename='js/background.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
 </body>
 </html>
