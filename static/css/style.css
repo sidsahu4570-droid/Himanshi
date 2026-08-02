@@ -971,30 +971,18 @@ body {
   justify-content: center;
   padding: 60px 24px;
   margin-bottom: 60px;
-  border-radius: 32px;
-  overflow: hidden;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-sizing: border-box;
 }
 
 .chapter-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  transition: opacity 0.8s ease;
+  display: none !important;
 }
-
-.sunrise-bg { background: linear-gradient(135deg, #1b0e26 0%, #481b3d 40%, #852f49 75%, #d4656f 100%); }
-.starlight-bg { background: linear-gradient(180deg, #090a1a 0%, #15102a 100%); }
-.mountain-bg { background: linear-gradient(180deg, #0c1024 0%, #1a1b3a 60%, #0d1222 100%); }
-.cars-bg { background: linear-gradient(135deg, #0a0e1a 0%, #1c2035 60%, #121422 100%); }
-.camera-bg { background: linear-gradient(135deg, #180d28 0%, #2e1a42 100%); }
-.meeting-bg { background: linear-gradient(180deg, #2d132c 0%, #681b37 60%, #9e3646 100%); }
-.dubai-bg { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
-.disneyland-bg { background: linear-gradient(135deg, #1e112a 0%, #431c4f 50%, #160c26 100%); }
-.rain-bg { background: linear-gradient(180deg, #0b111e 0%, #172033 100%); }
-.navratri-bg { background: linear-gradient(135deg, #240b1e 0%, #4a132c 50%, #280918 100%); }
-.storm-sunrise-bg { background: linear-gradient(180deg, #0d0a17 0%, #291227 60%, #68263e 90%, #fca17d 100%); }
-.final-ch-bg { background: radial-gradient(circle at center, #1b1638 0%, #080614 100%); }
 
 .chapter-canvas-wrap {
   position: absolute;
@@ -1083,7 +1071,10 @@ body {
     padding: 40px 16px;
     min-height: 100vh;
     min-height: 100dvh;
-    border-radius: 0;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     margin-bottom: 40px;
   }
 
