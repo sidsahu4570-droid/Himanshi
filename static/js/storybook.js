@@ -90,7 +90,49 @@ function initChapterCanvases() {
   initCh8Canvas(); // Fireworks
   initCh9Canvas(); // Rain
   initCh10Canvas(); // Garba Bokeh
+  initChLearnedCanvas(); // Soft warm light particles
   initFinalCanvas(); // Floating Lanterns
+}
+
+// Chapter 13: Soft Warm Light Canvas
+function initChLearnedCanvas() {
+  const canvas = document.getElementById('canvas-ch-learned');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = Array.from({ length: 20 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 3 + 1,
+    alpha: Math.random() * 0.5 + 0.3,
+    speedY: - (Math.random() * 0.3 + 0.1),
+    pulse: Math.random() * 0.015
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.y += p.speedY;
+      p.alpha += Math.sin(Date.now() * 0.0015) * p.pulse;
+      if (p.y < -10) p.y = canvas.height + 10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 215, 0, ${Math.max(0.15, Math.min(0.75, p.alpha))})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#ffd700';
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 
 // Chapter 5: Floating Memory Particles Canvas
