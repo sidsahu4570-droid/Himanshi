@@ -1030,3 +1030,128 @@ body {
   }
 }
 
+/* ==========================================================================
+   CINEMATIC APOLOGY SCENE STYLING (REPLACING GIANT HEART)
+   ========================================================================== */
+.cinematic-apology-section {
+  background: linear-gradient(180deg, #050714 0%, #0d1326 50%, #070a18 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moonlight-beam {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 230, 250, 0.22) 0%, rgba(192, 132, 252, 0.08) 45%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fog-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(180deg, transparent 0%, rgba(13, 19, 38, 0.85) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+#cinematic-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cinematic-glass {
+  opacity: 0;
+  transform: translateY(40px);
+  max-width: 760px;
+  width: 100%;
+  padding: 52px 44px;
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  background: rgba(10, 14, 28, 0.55);
+  border: 1px solid rgba(230, 230, 250, 0.2);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(192, 132, 252, 0.15);
+  animation: gentleFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes gentleFloat {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-8px); }
+}
+
+.cinematic-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--color-white);
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.glowing-divider {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-lavender), transparent);
+  margin: 0 auto 32px auto;
+  box-shadow: 0 0 12px var(--color-lavender);
+}
+
+.cinematic-text .type-line {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  line-height: 2.1;
+  color: var(--color-white-soft);
+  margin-bottom: 14px;
+  min-height: 1.8em;
+  font-weight: 400;
+}
+
+.emphasis-line {
+  color: var(--color-pink-soft) !important;
+  font-style: italic;
+}
+
+.relive-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: rgba(5, 7, 20, 0.85);
+  backdrop-filter: blur(16px);
+}
+
+.relive-part {
+  opacity: 0;
+  transform: translateY(20px);
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  color: var(--color-white);
+  line-height: 1.8;
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 50px rgba(192, 132, 252, 0.5);
+  margin-bottom: 16px;
+}
+
+

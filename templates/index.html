@@ -125,22 +125,33 @@
       </div>
     </section>
 
-    <!-- PAGE 4: GIANT GLOWING PULSING HEART -->
-    <section id="page-4" class="page-section">
-      <div class="heart-container">
-        <svg class="glowing-heart-svg" viewBox="0 0 100 100">
-          <path fill="url(#heart-grad)" d="M50,92 C47,89 8,55 8,28 C8,14 19,4 33,4 C42,4 49,9.5 50,11 C51,9.5 58,4 67,4 C81,4 92,14 92,28 C92,55 53,89 50,92 Z"/>
-          <defs>
-            <linearGradient id="heart-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ff6b8b" />
-              <stop offset="50%" stop-color="#ff3366" />
-              <stop offset="100%" stop-color="#ffd700" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <span class="heart-center-text">I'm Sorry ❤️</span>
+    <!-- CINEMATIC APOLOGY SCENE (REPLACING GIANT HEART) -->
+    <section id="cinematic-apology-scene" class="page-section cinematic-apology-section">
+      <!-- Moonlight & Fog Overlays -->
+      <div class="moonlight-beam"></div>
+      <div class="fog-overlay"></div>
+      <canvas id="cinematic-canvas"></canvas>
+
+      <!-- Center Floating Glass Card -->
+      <div id="cinematic-card" class="glass-card cinematic-glass">
+        <h2 class="cinematic-heading">The Moment I Wish I Could Change</h2>
+        <div class="glowing-divider"></div>
+        <div id="cinematic-typewriter-container" class="cinematic-text">
+          <p id="line-1" class="type-line"></p>
+          <p id="line-2" class="type-line"></p>
+          <p id="line-3" class="type-line"></p>
+          <p id="line-4" class="type-line"></p>
+          <p id="line-5" class="type-line emphasis-line"></p>
+        </div>
+      </div>
+
+      <!-- Relive Moment Overlay -->
+      <div id="relive-moment-overlay" class="relive-overlay">
+        <span id="relive-part1" class="relive-part">If I could relive one moment...</span>
+        <span id="relive-part2" class="relive-part">...it would be that one.</span>
       </div>
     </section>
+
 
     <!-- PAGE 5: THREE ANIMATED PROMISES -->
     <section id="page-5" class="page-section">

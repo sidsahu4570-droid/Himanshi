@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAudioToggle();
   initPage1Typing();
   initScrollAnimations();
+  initCinematicApologyScene();
   initPolaroids();
   initFinalButton();
 });
@@ -250,3 +251,227 @@ function initFinalButton() {
     }
   });
 }
+
+/* ==========================================================================
+   8. CINEMATIC APOLOGY SCENE ENGINE
+   ========================================================================== */
+function initCinematicApologyScene() {
+  const section = document.getElementById('cinematic-apology-scene');
+  const card = document.getElementById('cinematic-card');
+  const reliveOverlay = document.getElementById('relive-moment-overlay');
+  const relivePart1 = document.getElementById('relive-part1');
+  const relivePart2 = document.getElementById('relive-part2');
+
+  if (!section || !card) return;
+
+  initCinematicCanvas();
+
+  const sentences = [
+    { id: 'line-1', text: "I've replayed that moment in my mind many times." },
+    { id: 'line-2', text: "I wish I had chosen patience instead of anger." },
+    { id: 'line-3', text: "You deserved kindness." },
+    { id: 'line-4', text: "Not raised voices." },
+    { id: 'line-5', text: "I'm deeply sorry." }
+  ];
+
+  let hasStarted = false;
+
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 60%',
+    onEnter: () => {
+      if (hasStarted) return;
+      hasStarted = true;
+
+      // Card Fades in while gently floating
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 1.6,
+        ease: 'power3.out',
+        onComplete: () => {
+          playSentenceSequence(0);
+        }
+      });
+    }
+  });
+
+  function playSentenceSequence(index) {
+    if (index < sentences.length) {
+      const item = sentences[index];
+      const el = document.getElementById(item.id);
+      if (!el) return;
+
+      let charIdx = 0;
+      function typeChar() {
+        if (charIdx < item.text.length) {
+          el.textContent += item.text.charAt(charIdx);
+          charIdx++;
+          setTimeout(typeChar, 42);
+        } else {
+          // Pause between sentences
+          const pauseDuration = (index === sentences.length - 1) ? 2400 : 1200;
+          setTimeout(() => {
+            playSentenceSequence(index + 1);
+          }, pauseDuration);
+        }
+      }
+      typeChar();
+    } else {
+      // Card slowly fades away after final sentence
+      gsap.to(card, {
+        opacity: 0,
+        scale: 0.95,
+        duration: 1.6,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          card.style.display = 'none';
+          playReliveOverlay();
+        }
+      });
+    }
+  }
+
+  function playReliveOverlay() {
+    reliveOverlay.style.display = 'flex';
+
+    // Sentence Part 1: "If I could relive one moment..."
+    gsap.to(relivePart1, {
+      opacity: 1,
+      y: 0,
+      duration: 1.4,
+      ease: 'power2.out',
+      onComplete: () => {
+        // Pause 2 seconds
+        setTimeout(() => {
+          // Sentence Part 2: "...it would be that one."
+          gsap.to(relivePart2, {
+            opacity: 1,
+            y: 0,
+            duration: 1.4,
+            ease: 'power2.out',
+            onComplete: () => {
+              // Pause 3 seconds, then smooth scroll to next section
+              setTimeout(() => {
+                const nextSection = document.getElementById('page-5');
+                if (nextSection) {
+                  nextSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 3000);
+            }
+          });
+        }, 2000);
+      }
+    });
+  }
+}
+
+// Canvas engine for moonlight, tiny stars, fireflies, and light fog
+function initCinematicCanvas() {
+  const canvas = document.getElementById('cinematic-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Tiny Stars
+  const stars = [];
+  for (let i = 0; i < 140; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.8 + 0.2,
+      vAlpha: (Math.random() - 0.5) * 0.01
+    });
+  }
+
+  // Fireflies
+  const fireflies = [];
+  for (let i = 0; i < 28; i++) {
+    fireflies.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      alpha: Math.random() * 0.8 + 0.2,
+      color: '#e6e6fa'
+    });
+  }
+
+  // Moving Fog particles near bottom
+  const fog = [];
+  for (let i = 0; i < 18; i++) {
+    fog.push({
+      x: Math.random() * canvas.width,
+      y: canvas.height * 0.82 + Math.random() * (canvas.height * 0.18),
+      radius: Math.random() * 60 + 40,
+      vx: Math.random() * 0.3 + 0.1,
+      alpha: Math.random() * 0.15 + 0.05
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Stars
+    stars.forEach(s => {
+      s.alpha += s.vAlpha;
+      if (s.alpha > 0.9 || s.alpha < 0.2) s.vAlpha = -s.vAlpha;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, s.alpha);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Fireflies
+    fireflies.forEach(f => {
+      f.x += f.vx;
+      f.y += f.vy;
+      if (f.x < 0) f.x = canvas.width;
+      if (f.x > canvas.width) f.x = 0;
+      if (f.y < 0) f.y = canvas.height;
+      if (f.y > canvas.height) f.y = 0;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, f.alpha);
+      ctx.fillStyle = f.color;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#c084fc';
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Drifting Fog
+    fog.forEach(fg => {
+      fg.x += fg.vx;
+      if (fg.x - fg.radius > canvas.width) {
+        fg.x = -fg.radius;
+      }
+      ctx.save();
+      ctx.globalAlpha = fg.alpha;
+      ctx.fillStyle = 'rgba(230, 230, 250, 0.1)';
+      ctx.shadowBlur = 40;
+      ctx.shadowColor = 'rgba(230, 230, 250, 0.2)';
+      ctx.beginPath();
+      ctx.arc(fg.x, fg.y, fg.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
