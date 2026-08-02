@@ -1154,36 +1154,163 @@ body {
   color: var(--color-white-soft);
 }
 
-.journey-ending-card {
-  max-width: 760px;
+/* ==========================================================================
+   DOCUMENTARY CHAPTERS STYLING
+   ========================================================================== */
+.doc-chapter {
+  min-height: 100vh;
   width: 100%;
-  margin-top: 80px;
-  padding: 50px 36px;
-  border-radius: 24px;
-  background: radial-gradient(circle at center, #150926 0%, #080410 100%);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 50px rgba(212, 175, 55, 0.2);
-  text-align: center;
-  min-height: 240px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 90px 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-.journey-ending-text {
+.chap-badge {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 6px 20px;
+  border-radius: 50px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.chap-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.3rem, 3vw, 1.8rem);
-  line-height: 2;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: 32px;
+  background: linear-gradient(135deg, #ffffff 0%, var(--color-pink-soft) 50%, var(--color-gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 20px rgba(255, 183, 197, 0.3));
+}
+
+.chap-card {
+  max-width: 760px;
+  width: 100%;
+  padding: 48px 40px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 183, 197, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 183, 197, 0.15);
+  text-align: center;
+  position: relative;
+  transition: transform 0.5s var(--transition-smooth), border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.chap-card:hover {
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 215, 0, 0.25);
+}
+
+.chap-anim {
+  font-size: 2.8rem;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.chap-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  line-height: 2.1;
+  color: var(--color-white-soft);
+}
+
+.quote-dialogue {
+  font-family: var(--font-script);
+  font-size: 1.4em;
+  color: var(--color-pink-soft);
+  text-shadow: 0 0 15px rgba(255, 183, 197, 0.6);
+  display: inline-block;
+  margin: 8px 0;
+}
+
+/* Specific Chapter Themes */
+#chap-1 { background: radial-gradient(circle at center, #140b26 0%, #06030d 100%); }
+#chap-2 { background: linear-gradient(180deg, #1c0e2a 0%, #3d1b38 50%, #682643 100%); }
+#chap-3 { background: linear-gradient(180deg, #090e1f 0%, #152238 60%, #0d1424 100%); }
+#chap-4 { background: radial-gradient(circle at center, #1f1a24 0%, #08060a 100%); }
+#chap-5 { background: linear-gradient(180deg, #180d28 0%, #0a0614 100%); }
+#chap-6 { background: linear-gradient(180deg, #3d1830 0%, #5c2438 50%, #2b1022 100%); }
+#chap-7 { background: radial-gradient(circle at 50% 80%, #291236 0%, #0a0512 80%); }
+#chap-8 { background: linear-gradient(180deg, #0d182b 0%, #1c2d4a 50%, #080f1c 100%); }
+#chap-9 { background: radial-gradient(circle at center, #2b1138 0%, #0b0412 100%); }
+#chap-10 { background: linear-gradient(180deg, #0d0e1a 0%, #181b2e 100%); }
+#chap-11 { background: radial-gradient(circle at center, #2e1728 0%, #0c0510 100%); }
+#chap-12 { background: linear-gradient(180deg, #140a1d 0%, #08040f 100%); }
+#chap-final { background: radial-gradient(circle at 50% 30%, #1a1638 0%, #06040d 80%); }
+
+/* Calendar Flipper */
+.calendar-flipper {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-lavender);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.cal-year.active {
+  color: var(--color-gold);
+  text-shadow: 0 0 15px var(--color-gold);
+}
+
+/* Final Document Card */
+.final-doc-card {
+  max-width: 800px;
+  width: 100%;
+  padding: 54px 44px;
+  border-radius: 24px;
+  background: rgba(20, 10, 28, 0.7);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.2);
+  text-align: center;
+  margin-top: 30px;
+}
+
+.final-doc-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+  line-height: 2.2;
   color: var(--color-white-soft);
   white-space: pre-line;
+  min-height: 240px;
 }
 
-.journey-ending-signature {
+.final-doc-sig {
   font-family: var(--font-script);
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2.8rem, 6vw, 4rem);
   color: var(--color-pink-soft);
-  margin-top: 24px;
-  text-shadow: 0 0 20px rgba(255, 183, 197, 0.6);
+  margin-top: 36px;
+  opacity: 0;
+  transform: scale(0.9);
+  text-shadow: 0 0 25px rgba(255, 183, 197, 0.7), 0 0 50px rgba(212, 175, 55, 0.4);
+  transition: all 2s var(--transition-smooth);
 }
+
+.final-doc-sig.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
 
