@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCinematicApologyScene();
   initPolaroids();
   initFinalLakeSection();
+  initWhatsAppButtonTransition();
 });
 
 /* ==========================================================================
@@ -1015,6 +1016,36 @@ function initPage1SkyCanvas() {
     requestAnimationFrame(animate);
   }
   animate();
+}
+
+/* ==========================================================================
+   11. WHATSAPP BUTTON THANK YOU FADE TRANSITION
+   ========================================================================== */
+function initWhatsAppButtonTransition() {
+  const whatsappBtn = document.getElementById('message-siddharth-btn');
+  const overlay = document.getElementById('whatsapp-thankyou-overlay');
+
+  if (!whatsappBtn || !overlay) return;
+
+  whatsappBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetUrl = whatsappBtn.getAttribute('href');
+
+    // Soft fade in overlay
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      overlay.style.opacity = '1';
+    });
+
+    // Display for 1 second (1000ms), then fade out and open WhatsApp
+    setTimeout(() => {
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        window.open(targetUrl, '_blank');
+      }, 500);
+    }, 1000);
+  });
 }
 
 
