@@ -963,7 +963,7 @@ body {
   margin-bottom: 60px;
 }
 
-.chapter-card {
+.chapter-section {
   position: relative;
   min-height: 80vh;
   display: flex;
@@ -973,8 +973,7 @@ body {
   margin-bottom: 60px;
   border-radius: 32px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-sizing: border-box;
 }
 
 .chapter-bg {
@@ -1009,7 +1008,7 @@ body {
   height: 100%;
 }
 
-.chapter-glass {
+.chapter-card {
   max-width: 720px;
   width: 100%;
   padding: 48px;
@@ -1080,15 +1079,15 @@ body {
 }
 
 @media (max-width: 768px) {
-  .chapter-card {
+  .chapter-section {
     padding: 40px 16px;
     min-height: 100vh;
     min-height: 100dvh;
-    border-radius: 24px;
-    margin-bottom: 60px;
+    border-radius: 0;
+    margin-bottom: 40px;
   }
 
-  .chapter-glass {
+  .chapter-card {
     padding: 32px 20px;
     border-radius: 24px;
     width: 100%;

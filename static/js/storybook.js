@@ -18,37 +18,37 @@ document.addEventListener('DOMContentLoaded', () => {
    1. CHAPTER SCROLLTRIGGER REVEALS
    ========================================================================== */
 function initChapterReveals() {
-  const chapterCards = document.querySelectorAll('.chapter-card');
+  const chapterSections = document.querySelectorAll('.chapter-section');
 
-  // Pre-calculate and lock fixed height once on every .chapter-glass card
-  chapterCards.forEach((chapter) => {
-    const glass = chapter.querySelector('.chapter-glass');
-    if (glass) {
-      const fullHeight = glass.getBoundingClientRect().height;
+  // Pre-calculate and lock fixed height once on every .chapter-card
+  chapterSections.forEach((section) => {
+    const card = section.querySelector('.chapter-card');
+    if (card) {
+      const fullHeight = card.getBoundingClientRect().height;
       if (fullHeight > 0) {
-        glass.style.height = `${Math.ceil(fullHeight)}px`;
-        glass.style.minHeight = `${Math.ceil(fullHeight)}px`;
+        card.style.height = `${Math.ceil(fullHeight)}px`;
+        card.style.minHeight = `${Math.ceil(fullHeight)}px`;
       }
     }
   });
 
-  chapterCards.forEach((chapter) => {
-    const glass = chapter.querySelector('.chapter-glass');
-    const badge = chapter.querySelector('.chapter-badge');
-    const title = chapter.querySelector('.chapter-title');
-    const paragraphs = chapter.querySelectorAll('.chapter-text p');
+  chapterSections.forEach((section) => {
+    const card = section.querySelector('.chapter-card');
+    const badge = section.querySelector('.chapter-badge');
+    const title = section.querySelector('.chapter-title');
+    const paragraphs = section.querySelectorAll('.chapter-text p');
 
     const timeline = gsap.timeline({
       scrollTrigger: {
-        trigger: chapter,
+        trigger: section,
         start: 'top 85%',
         toggleActions: 'play none none none',
         once: true
       }
     });
 
-    if (glass) {
-      timeline.fromTo(glass, 
+    if (card) {
+      timeline.fromTo(card, 
         { opacity: 0, y: 30, scale: 0.96 }, 
         { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }
       );
