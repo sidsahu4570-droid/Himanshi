@@ -958,7 +958,7 @@ body {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 120px;
+  gap: 100px;
 }
 
 .storybook-header {
@@ -968,12 +968,12 @@ body {
 
 .chapter-section {
   position: relative;
-  min-height: 80vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
-  margin-bottom: 0 !important;
+  padding: 0;
+  margin: 0 !important;
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1071,31 +1071,24 @@ body {
 
 @media (max-width: 768px) {
   .storybook-container {
-    padding: 0 12px;
+    padding: 0 16px;
     margin: 40px auto;
-    gap: 80px;
+    gap: 60px;
   }
 
   .chapter-section {
-    padding: 20px 16px;
-    min-height: 100vh;
-    min-height: 100dvh;
+    padding: 0;
+    margin: 0 !important;
     background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    margin-bottom: 0 !important;
   }
 
   .chapter-card {
     padding: 32px 20px;
     border-radius: 24px;
     width: 100%;
-  }
-
-  .storybook-container {
-    padding: 0 12px;
-    margin: 40px auto;
   }
 }
 
