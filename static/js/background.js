@@ -180,6 +180,41 @@ class BackgroundEngine {
     });
   }
 
+  enableCinematicEnding() {
+    this.stars.forEach(s => {
+      s.radius = Math.min(3, s.radius * 1.5);
+      s.alpha = 0.9;
+    });
+
+    // Add extra fireflies
+    for (let i = 0; i < 20; i++) {
+      this.fireflies.push({
+        x: Math.random() * this.width,
+        y: Math.random() * this.height,
+        radius: Math.random() * 3 + 1.5,
+        alpha: Math.random() * 0.8 + 0.2,
+        speedAlpha: Math.random() * 0.03 + 0.01,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        color: Math.random() > 0.5 ? '#ffd700' : '#ffb7c5'
+      });
+    }
+
+    // Add extra soft floating rose petals
+    for (let i = 0; i < 15; i++) {
+      this.petals.push({
+        x: Math.random() * this.width,
+        y: Math.random() * this.height - this.height,
+        size: Math.random() * 10 + 8,
+        vy: Math.random() * 0.8 + 0.4,
+        vx: Math.random() * 0.5 - 0.25,
+        rotation: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 1.5,
+        opacity: Math.random() * 0.6 + 0.4
+      });
+    }
+  }
+
   animate() {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.drawStars();
@@ -190,6 +225,7 @@ class BackgroundEngine {
     requestAnimationFrame(() => this.animate());
   }
 }
+
 
 // Heart & Star Shower Explosion for Final Page
 window.triggerHeartShower = function() {

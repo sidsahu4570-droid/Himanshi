@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initAudioToggle();
   initPage1Typing();
   initScrollAnimations();
-  initPolaroids();
-  initFinalButton();
+  initFinalCinematicSequence();
 });
+
 
 /* ==========================================================================
    1. CUSTOM CURSOR
@@ -304,38 +304,62 @@ function initScrollAnimations() {
 
 
 /* ==========================================================================
-   6. POLAROID 3D TILT & HOVER EFFECT
+   6. CINEMATIC FINAL SEQUENCE
    ========================================================================== */
-function initPolaroids() {
-  const polaroids = document.querySelectorAll('.polaroid-frame');
-  polaroids.forEach(p => {
-    p.addEventListener('mousemove', (e) => {
-      const rect = p.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
+function initFinalCinematicSequence() {
+  const finalQuoteEl = document.getElementById('final-typed-quote');
+  const finalLine2El = document.getElementById('final-typed-line2');
+  const finalSigEl = document.getElementById('final-signature');
+  let finalTriggered = false;
 
-      const tiltX = (y / rect.height) * 15;
-      const tiltY = -(x / rect.width) * 15;
+  if (!finalQuoteEl) return;
 
-      p.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.06)`;
-    });
+  ScrollTrigger.create({
+    trigger: '#page-final',
+    start: 'top 65%',
+    onEnter: () => {
+      if (finalTriggered) return;
+      finalTriggered = true;
 
-    p.addEventListener('mouseleave', () => {
-      p.style.transform = '';
-    });
-  });
-}
+      // Soften background piano audio
+      if (window.romanticAudio && window.romanticAudio.masterGain && window.romanticAudio.audioCtx) {
+        try {
+          window.romanticAudio.masterGain.gain.linearRampToValueAtTime(0.06, window.romanticAudio.audioCtx.currentTime + 5);
+        } catch (e) {}
+      }
 
-/* ==========================================================================
-   7. FINAL PAGE BUTTON - HEART SHOWER EXPLOSION
-   ========================================================================== */
-function initFinalButton() {
-  const finalBtn = document.getElementById('final-heart-btn');
-  if (!finalBtn) return;
+      // Enable canvas cinematic visual enhancements (extra bright stars, floating rose petals)
+      if (window.bgEngine && typeof window.bgEngine.enableCinematicEnding === 'function') {
+        window.bgEngine.enableCinematicEnding();
+      }
 
-  finalBtn.addEventListener('click', () => {
-    if (typeof window.triggerHeartShower === 'function') {
-      window.triggerHeartShower();
+      const quoteText = "If this little website could make you smile even for a moment,\nthen it was worth creating.";
+      let charIdx = 0;
+
+      function typeQuote() {
+        if (charIdx < quoteText.length) {
+          finalQuoteEl.textContent += quoteText.charAt(charIdx);
+          charIdx++;
+          setTimeout(typeQuote, 55);
+        } else {
+          // Pause 3 seconds, then reveal line 2
+          setTimeout(() => {
+            if (finalLine2El) {
+              finalLine2El.classList.add('show');
+            }
+
+            // Fade in signature
+            setTimeout(() => {
+              if (finalSigEl) {
+                finalSigEl.classList.add('show');
+              }
+            }, 1800);
+          }, 3000);
+        }
+      }
+
+      typeQuote();
     }
   });
 }
+
