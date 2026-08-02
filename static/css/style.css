@@ -413,8 +413,14 @@ body {
 }
 
 .typed-text-body .typed-para {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   font-weight: 400;
+}
+
+.typed-text-body .paragraph-italic {
+  font-style: italic;
+  color: var(--color-lavender);
+  margin-bottom: 12px;
 }
 
 .typed-text-body .typed-para:last-of-type {
@@ -426,7 +432,7 @@ body {
   font-size: clamp(2.4rem, 5vw, 3.2rem);
   color: var(--color-pink-soft);
   text-align: right;
-  margin-top: 32px;
+  margin-top: 24px;
   margin-bottom: 8px;
   text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
 }
@@ -435,7 +441,7 @@ body {
   position: absolute;
   bottom: 30px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 15px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -444,8 +450,9 @@ body {
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.8;
+  opacity: 0;
   animation: bounce 2s infinite;
+  transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
 .scroll-indicator svg {

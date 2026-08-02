@@ -111,19 +111,17 @@ function initAudioToggle() {
    ========================================================================== */
 function initPage1Typing() {
   const container = document.getElementById('page1-typed-letter');
+  const scrollIndicator = document.querySelector('#page-1 .scroll-indicator');
   if (!container) return;
 
   const paragraphs = [
-    "Three years ago, one simple message started something I'll always remember.",
-    "At first, I rushed my feelings, and I understand now that I should have given you more time and more space.",
-    "Life took us in different directions, but somehow we found our way back to talking again. We spoke about dreams, careers, mountains, cars, Dubai, Disneyland, birthdays, and so many random little moments that slowly became memories I'll never forget.",
-    "Then one day, I made the biggest mistake of all.",
-    "Instead of being patient, I let my frustration become anger.",
-    "I raised my voice at someone who had always deserved kindness and respect.",
-    "There is no excuse for that.",
-    "This website isn't here to change your mind or make you feel guilty.",
-    "I created it because I wanted to take responsibility, apologise sincerely, and thank you for every conversation we shared.",
-    "If nothing else, I hope you know that every word written here comes from my heart.",
+    "I never imagined that one simple message, almost three years ago, would become a story filled with so many memories.",
+    "Some of those memories still make me smile.",
+    "One of them is the mistake I wish I could take back.",
+    "This website isn't here to convince you of anything.",
+    "It's simply the story of us, told from my heart.",
+    "If you're willing...",
+    "keep scrolling.",
     "— Siddharth"
   ];
 
@@ -140,15 +138,26 @@ function initPage1Typing() {
   });
 
   function typeParagraph(pIndex) {
-    if (pIndex >= paragraphs.length) return;
+    if (pIndex >= paragraphs.length) {
+      if (scrollIndicator) {
+        scrollIndicator.style.opacity = '0.9';
+        scrollIndicator.style.transform = 'translate(-50%, 0)';
+      }
+      return;
+    }
 
     const isSignature = pIndex === paragraphs.length - 1;
+    const isWilling = paragraphs[pIndex] === "If you're willing..." || paragraphs[pIndex] === "keep scrolling.";
     const pEl = document.createElement(isSignature ? 'div' : 'p');
+
     if (isSignature) {
       pEl.className = 'letter-signature';
+    } else if (isWilling) {
+      pEl.className = 'typed-para paragraph-italic';
     } else {
       pEl.className = 'typed-para';
     }
+
     container.appendChild(pEl);
 
     const text = paragraphs[pIndex];
@@ -158,10 +167,10 @@ function initPage1Typing() {
       if (charIndex < text.length) {
         pEl.textContent += text.charAt(charIndex);
         charIndex++;
-        setTimeout(typeChar, 32);
+        setTimeout(typeChar, 35);
       } else {
         // Pause briefly between paragraphs
-        const pauseTime = isSignature ? 500 : 700;
+        const pauseTime = isSignature ? 500 : 450;
         setTimeout(() => {
           typeParagraph(pIndex + 1);
         }, pauseTime);
