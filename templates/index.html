@@ -39,49 +39,47 @@
   <!-- Heart & Star Particle Shower Canvas for Final Page -->
   <canvas id="heart-shower-canvas"></canvas>
 
-  <!-- CINEMATIC MOVIE INTRODUCTION (REPLACING LANDING & PAGE-1) -->
-  <section id="cinematic-intro">
-    <canvas id="intro-canvas"></canvas>
-    
-    <!-- Water Ripple Layer -->
-    <div id="intro-water-layer" class="intro-water-layer"></div>
-
-    <!-- Start Trigger Button Overlay -->
-    <div id="intro-start-overlay" class="intro-start-overlay">
-      <button id="intro-start-btn" class="btn-glow">
-        <span>Begin Experience</span>
-        <span class="btn-icon">✨</span>
-      </button>
-    </div>
-
-    <!-- Scene 2: Paper Airplane & Handwritten Text -->
-    <div id="intro-scene-2" class="intro-scene">
-      <div class="intro-airplane-wrap">
-        <svg class="paper-plane-svg" viewBox="0 0 60 40">
-          <polygon points="5,20 55,5 30,35 25,24" fill="rgba(255,255,255,0.85)" stroke="rgba(255,183,197,0.6)" stroke-width="1.5"/>
-          <line x1="55" y1="5" x2="25" y2="24" stroke="rgba(255,215,0,0.5)" stroke-width="1"/>
-        </svg>
-      </div>
-      <h2 class="intro-script-heading">For Someone Who Once Meant The World To Me.</h2>
-    </div>
-
-    <!-- Scene 3: Moonlight Water Reflection & Typewriter -->
-    <div id="intro-scene-3" class="intro-scene">
-      <div class="intro-typewriter-wrap">
-        <p id="s3-line1" class="s3-text"></p>
-        <p id="s3-line2" class="s3-text"></p>
-        <p id="s3-line3" class="s3-text emphasis-text"></p>
-      </div>
-    </div>
-
-    <!-- Scene 4: Vintage Unfolding Paper & Natural Ink Writing -->
-    <div id="intro-scene-4" class="intro-scene">
-      <div id="parchment-paper" class="parchment-card">
-        <div class="parchment-ink-header">Dear Himanshi,</div>
-        <div id="ink-content" class="parchment-ink-body"></div>
+  <!-- LANDING SCREEN OVERLAY -->
+  <section id="landing-screen">
+    <div class="landing-content">
+      <div id="landing-subtitle-text" class="landing-subtitle"></div>
+      <h1 id="landing-title" class="landing-title">Himanshi ❤️</h1>
+      <div>
+        <button id="open-btn" class="btn-glow open-btn">
+          <span>Please Open This</span>
+          <span class="btn-icon">✨</span>
+        </button>
       </div>
     </div>
   </section>
+
+  <!-- MAIN SCENE CONTAINER -->
+  <main>
+
+    <!-- PAGE 1: PEACEFUL NIGHT & LUXURY IVORY HANDWRITTEN LETTER -->
+    <section id="page-1" class="page-section peaceful-night-section">
+      <!-- Background Elements -->
+      <div class="night-moon"></div>
+      <div class="night-aurora"></div>
+      <div class="night-fog"></div>
+      <canvas id="page1-night-canvas"></canvas>
+
+      <!-- Luxurious Warm Ivory Paper Letter -->
+      <div id="page1-paper-card" class="ivory-paper-letter">
+        <div class="paper-texture-overlay"></div>
+        <div class="paper-inner-border">
+          <h2 id="page1-ink-header" class="paper-ink-header"></h2>
+          <div id="page1-typed-letter" class="paper-typed-body"></div>
+        </div>
+      </div>
+
+      <div class="scroll-indicator peaceful-indicator">
+        <span>Scroll Down</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+        </svg>
+      </div>
+    </section>
 
 
     <!-- PAGE 2: TIMELINE - I ACCEPT MY MISTAKE -->

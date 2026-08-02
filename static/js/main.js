@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger);
 
   initCursor();
-  initCinematicIntroSequence();
+  initLandingSequence();
   initAudioToggle();
+  initPage1Typing();
   initScrollAnimations();
   initCinematicApologyScene();
   initPolaroids();
@@ -42,32 +43,38 @@ function initCursor() {
 /* ==========================================================================
    2. LANDING SCREEN SEQUENCE
    ========================================================================== */
-/* ==========================================================================
-   2. CINEMATIC MOVIE INTRODUCTION SEQUENCE
-   ========================================================================== */
-function initCinematicIntroSequence() {
-  const startBtn = document.getElementById('intro-start-btn');
-  const startOverlay = document.getElementById('intro-start-overlay');
+function initLandingSequence() {
+  const subtitleEl = document.getElementById('landing-subtitle-text');
+  const titleEl = document.getElementById('landing-title');
+  const btnEl = document.getElementById('open-btn');
+  const landingScreen = document.getElementById('landing-screen');
   const audioBtn = document.getElementById('audio-toggle-btn');
 
-  const scene2 = document.getElementById('intro-scene-2');
-  const planeWrap = document.querySelector('.intro-airplane-wrap');
-  const s2Heading = document.querySelector('.intro-script-heading');
+  const phrase = "For Someone Very Special...";
+  let charIdx = 0;
 
-  const scene3 = document.getElementById('intro-scene-3');
-  const s3Line1 = document.getElementById('s3-line1');
-  const s3Line2 = document.getElementById('s3-line2');
-  const s3Line3 = document.getElementById('s3-line3');
+  // Type letter-by-letter
+  function typeSubtitle() {
+    if (charIdx < phrase.length) {
+      subtitleEl.textContent += phrase.charAt(charIdx);
+      charIdx++;
+      setTimeout(typeSubtitle, 70);
+    } else {
+      // Reveal Title "Himanshi ❤️"
+      setTimeout(() => {
+        titleEl.classList.add('show');
+        setTimeout(() => {
+          btnEl.classList.add('show');
+        }, 800);
+      }, 500);
+    }
+  }
 
-  const scene4 = document.getElementById('intro-scene-4');
-  const parchment = document.getElementById('parchment-paper');
-  const inkBody = document.getElementById('ink-content');
+  setTimeout(typeSubtitle, 600);
 
-  const introCanvasEngine = initIntroCanvas();
-
-  if (!startBtn) return;
-
-  startBtn.addEventListener('click', () => {
+  // Click "Please Open This"
+  btnEl.addEventListener('click', () => {
+    // Start Audio
     if (window.romanticAudio) {
       window.romanticAudio.start();
     }
@@ -75,159 +82,124 @@ function initCinematicIntroSequence() {
       audioBtn.classList.add('visible');
     }
 
-    gsap.to(startOverlay, {
-      opacity: 0,
-      duration: 1.2,
-      onComplete: () => {
-        startOverlay.style.display = 'none';
-        
-        // SCENE 1: Moon rises, starry night, fireflies. 5 Seconds NO text.
-        if (introCanvasEngine && introCanvasEngine.startMoonRise) {
-          introCanvasEngine.startMoonRise();
-        }
+    // Fade out Landing Screen
+    landingScreen.classList.add('fade-out');
 
-        setTimeout(() => {
-          playScene2();
-        }, 5000);
-      }
-    });
+    // Scroll to Page 1
+    setTimeout(() => {
+      document.getElementById('page-1').scrollIntoView({ behavior: 'smooth' });
+    }, 400);
+  });
+}
+
+/* ==========================================================================
+   3. AUDIO TOGGLE BUTTON
+   ========================================================================== */
+function initAudioToggle() {
+  const audioBtn = document.getElementById('audio-toggle-btn');
+  if (!audioBtn) return;
+
+  audioBtn.addEventListener('click', () => {
+    if (window.romanticAudio) {
+      const playing = window.romanticAudio.toggle();
+      audioBtn.style.color = playing ? '#ffd700' : 'rgba(255,255,255,0.4)';
+    }
+  });
+}
+
+/* ==========================================================================
+   4. PAGE 1: PEACEFUL NIGHT & LUXURY IVORY HANDWRITTEN LETTER
+   ========================================================================== */
+function initPage1PeacefulNight() {
+  const section = document.getElementById('page-1');
+  const paperCard = document.getElementById('page1-paper-card');
+  const headerEl = document.getElementById('page1-ink-header');
+  const bodyEl = document.getElementById('page1-typed-letter');
+  const moon = section ? section.querySelector('.night-moon') : null;
+
+  if (!section || !paperCard || !bodyEl) return;
+
+  initPage1NightCanvas();
+
+  // Mouse move 3D tilt on paper card
+  section.addEventListener('mousemove', (e) => {
+    const rect = paperCard.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    const tiltX = (y / rect.height) * 8;
+    const tiltY = -(x / rect.width) * 8;
+
+    paperCard.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
   });
 
-  // SCENE 2: Paper Airplane & Handwritten Text
-  function playScene2() {
-    scene2.style.display = 'flex';
+  section.addEventListener('mouseleave', () => {
+    paperCard.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+  });
 
-    gsap.fromTo(planeWrap, 
-      { x: '-10vw', y: '60vh', opacity: 0, rotate: -15 },
-      { x: '110vw', y: '20vh', opacity: 1, rotate: 10, duration: 4.5, ease: 'power1.inOut' }
-    );
+  const headerText = "Dear Himanshi,";
+  const bodyText = `I don't know why you're upset with me, but I can feel the distance between us.
 
-    gsap.fromTo(s2Heading,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1.8, delay: 1.0, ease: 'power2.out',
+Maybe I made mistakes that hurt you.
+Maybe I didn't understand your feelings.
+
+Whatever the reason is...
+I genuinely want to understand.
+
+If I hurt you...
+I'm truly sorry.`;
+
+  let hasStarted = false;
+
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 60%',
+    onEnter: () => {
+      if (hasStarted) return;
+      hasStarted = true;
+
+      // 1. Moon slowly brightens
+      if (moon) {
+        gsap.to(moon, { opacity: 1, scale: 1, duration: 2.0, ease: 'power2.out' });
+      }
+
+      // 2. Paper gently unfolds
+      gsap.to(paperCard, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1.8,
+        ease: 'power3.out',
         onComplete: () => {
-          setTimeout(() => {
-            gsap.to(scene2, {
-              opacity: 0,
-              duration: 1.5,
-              onComplete: () => {
-                scene2.style.display = 'none';
-                playScene3();
-              }
-            });
-          }, 3500);
+          // 3. Title writes itself with ink
+          typeHeader(0);
         }
-      }
-    );
-  }
-
-  // SCENE 3: Moonlight Water Reflection & Typewriter
-  function playScene3() {
-    scene3.style.display = 'flex';
-    const waterLayer = document.getElementById('intro-water-layer');
-    if (waterLayer) waterLayer.classList.add('active');
-
-    const lines = [
-      { el: s3Line1, text: "This isn't a request." },
-      { el: s3Line2, text: "It's simply a story I never got to finish." },
-      { el: s3Line3, text: "And it begins with you..." }
-    ];
-
-    function typeScene3Line(idx) {
-      if (idx < lines.length) {
-        const item = lines[idx];
-        let charIdx = 0;
-        function typeChar() {
-          if (charIdx < item.text.length) {
-            item.el.textContent += item.text.charAt(charIdx);
-            charIdx++;
-            setTimeout(typeChar, 45);
-          } else {
-            const pause = (idx === lines.length - 1) ? 2200 : 1200;
-            setTimeout(() => {
-              typeScene3Line(idx + 1);
-            }, pause);
-          }
-        }
-        typeChar();
-      } else {
-        gsap.to(scene3, {
-          opacity: 0,
-          duration: 1.5,
-          onComplete: () => {
-            scene3.style.display = 'none';
-            playScene4();
-          }
-        });
-      }
+      });
     }
+  });
 
-    typeScene3Line(0);
+  function typeHeader(idx) {
+    if (idx < headerText.length) {
+      if (headerEl) headerEl.textContent += headerText.charAt(idx);
+      setTimeout(() => typeHeader(idx + 1), 60);
+    } else {
+      // 4. Paragraph appears with typewriter effect
+      setTimeout(() => typeBody(0), 400);
+    }
   }
 
-  // SCENE 4: Vintage Unfolding Paper & Natural Ink Writing
-  function playScene4() {
-    scene4.style.display = 'flex';
-
-    gsap.fromTo(parchment,
-      { opacity: 0, scale: 0.6, rotate: -4 },
-      { opacity: 1, scale: 1, rotate: 0, duration: 1.6, ease: 'back.out(1.4)',
-        onComplete: () => {
-          const letterLines = [
-            "I don't know why we're here today.",
-            "",
-            "But if you're reading this,",
-            "thank you for giving these few minutes a chance."
-          ];
-
-          let lineIdx = 0;
-          function writeNextLine() {
-            if (lineIdx < letterLines.length) {
-              const lineText = letterLines[lineIdx];
-              const p = document.createElement('p');
-              p.className = 'ink-line';
-              inkBody.appendChild(p);
-
-              if (lineText === "") {
-                p.style.minHeight = "1em";
-                lineIdx++;
-                setTimeout(writeNextLine, 300);
-                return;
-              }
-
-              let charIdx = 0;
-              function writeChar() {
-                if (charIdx < lineText.length) {
-                  p.textContent += lineText.charAt(charIdx);
-                  charIdx++;
-                  setTimeout(writeChar, 38);
-                } else {
-                  lineIdx++;
-                  setTimeout(writeNextLine, 400);
-                }
-              }
-              writeChar();
-            } else {
-              setTimeout(() => {
-                const nextTarget = document.getElementById('page-2') || document.getElementById('storybook-section');
-                if (nextTarget) {
-                  nextTarget.scrollIntoView({ behavior: 'smooth' });
-                }
-              }, 3000);
-            }
-          }
-
-          writeNextLine();
-        }
-      }
-    );
+  function typeBody(idx) {
+    if (idx < bodyText.length) {
+      bodyEl.textContent += bodyText.charAt(idx);
+      setTimeout(() => typeBody(idx + 1), 35);
+    }
   }
 }
 
-// Intro Canvas Engine (Moon Rising, Stars, Fireflies)
-function initIntroCanvas() {
-  const canvas = document.getElementById('intro-canvas');
-  if (!canvas) return null;
+// Night Canvas Engine for Page 1: Twinkling stars, fireflies, and occasional floating flower petal
+function initPage1NightCanvas() {
+  const canvas = document.getElementById('page1-night-canvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
   function resize() {
@@ -237,54 +209,54 @@ function initIntroCanvas() {
   resize();
   window.addEventListener('resize', resize);
 
-  let moonY = canvas.height + 80;
-  let targetMoonY = canvas.height * 0.28;
-  let moonRising = false;
-
+  // Stars
   const stars = [];
-  for (let i = 0; i < 160; i++) {
+  for (let i = 0; i < 150; i++) {
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 1.5 + 0.5,
       alpha: Math.random() * 0.8 + 0.2,
-      vAlpha: (Math.random() - 0.5) * 0.01
+      vAlpha: (Math.random() - 0.5) * 0.008
     });
   }
 
+  // Fireflies
   const fireflies = [];
-  for (let i = 0; i < 35; i++) {
+  for (let i = 0; i < 22; i++) {
     fireflies.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 2 + 1,
-      vx: (Math.random() - 0.5) * 0.6,
-      vy: (Math.random() - 0.5) * 0.6,
-      alpha: Math.random() * 0.8 + 0.2,
-      color: Math.random() > 0.5 ? '#ffb7c5' : '#ffd700'
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.8 + 0.2
     });
   }
+
+  // Single occasional floating flower petal
+  const petal = {
+    x: -50,
+    y: Math.random() * canvas.height * 0.5,
+    size: 10,
+    vx: 0.8,
+    vy: 0.3,
+    rotation: 0,
+    active: false
+  };
+
+  setInterval(() => {
+    if (!petal.active && Math.random() > 0.3) {
+      petal.x = -20;
+      petal.y = Math.random() * (canvas.height * 0.6);
+      petal.active = true;
+    }
+  }, 8000);
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (moonRising && moonY > targetMoonY) {
-      moonY -= 0.6;
-    }
-
-    ctx.save();
-    ctx.shadowBlur = 60;
-    ctx.shadowColor = 'rgba(255, 246, 214, 0.8)';
-    const moonGrad = ctx.createRadialGradient(canvas.width / 2, moonY, 10, canvas.width / 2, moonY, 50);
-    moonGrad.addColorStop(0, '#ffffff');
-    moonGrad.addColorStop(0.6, '#fff6d6');
-    moonGrad.addColorStop(1, '#ffd700');
-    ctx.fillStyle = moonGrad;
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2, moonY, 50, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
+    // Draw Stars
     stars.forEach(s => {
       s.alpha += s.vAlpha;
       if (s.alpha > 0.9 || s.alpha < 0.2) s.vAlpha = -s.vAlpha;
@@ -297,6 +269,7 @@ function initIntroCanvas() {
       ctx.restore();
     });
 
+    // Draw Fireflies
     fireflies.forEach(f => {
       f.x += f.vx;
       f.y += f.vy;
@@ -306,27 +279,43 @@ function initIntroCanvas() {
       if (f.y > canvas.height) f.y = 0;
 
       ctx.save();
-      ctx.globalAlpha = Math.max(0, f.alpha);
-      ctx.fillStyle = f.color;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = f.color;
+      ctx.globalAlpha = f.alpha;
+      ctx.fillStyle = '#c084fc';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#e6e6fa';
       ctx.beginPath();
       ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     });
 
+    // Draw Occasional Floating Flower Petal
+    if (petal.active) {
+      petal.x += petal.vx;
+      petal.y += petal.vy + Math.sin(petal.x * 0.01) * 0.4;
+      petal.rotation += 0.5;
+
+      if (petal.x > canvas.width + 50) {
+        petal.active = false;
+      }
+
+      ctx.save();
+      ctx.translate(petal.x, petal.y);
+      ctx.rotate((petal.rotation * Math.PI) / 180);
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = '#e6e6fa';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-petal.size, -petal.size, -petal.size, petal.size, 0, petal.size * 1.4);
+      ctx.bezierCurveTo(petal.size, petal.size, petal.size, -petal.size, 0, 0);
+      ctx.fill();
+      ctx.restore();
+    }
+
     requestAnimationFrame(animate);
   }
   animate();
-
-  return {
-    startMoonRise: () => {
-      moonRising = true;
-    }
-  };
 }
-
 
 /* ==========================================================================
    5. GSAP SCROLLTRIGGER ANIMATIONS
