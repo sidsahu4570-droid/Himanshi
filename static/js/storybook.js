@@ -86,10 +86,52 @@ function initChapterReveals() {
 function initChapterCanvases() {
   initCh1Canvas(); // Airplane floating
   initCh3Canvas(); // Campfire sparks
+  initChMemoriesCanvas(); // Floating memory particles
   initCh8Canvas(); // Fireworks
   initCh9Canvas(); // Rain
   initCh10Canvas(); // Garba Bokeh
   initFinalCanvas(); // Floating Lanterns
+}
+
+// Chapter 5: Floating Memory Particles Canvas
+function initChMemoriesCanvas() {
+  const canvas = document.getElementById('canvas-ch-memories');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = Array.from({ length: 25 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 2.5 + 1,
+    alpha: Math.random() * 0.6 + 0.2,
+    speedY: - (Math.random() * 0.4 + 0.1),
+    pulse: Math.random() * 0.02
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.y += p.speedY;
+      p.alpha += Math.sin(Date.now() * 0.002) * p.pulse;
+      if (p.y < -10) p.y = canvas.height + 10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 183, 197, ${Math.max(0.1, Math.min(0.8, p.alpha))})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ffb7c5';
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 
 // Chapter 1: Paper Airplane Canvas
