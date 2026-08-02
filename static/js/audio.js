@@ -37,8 +37,8 @@ class RomanticPianoAudio {
     if (this.isPlaying) return;
 
     this.isPlaying = true;
-    // Fade in master volume softly (low volume cinematic piano)
-    this.masterGain.gain.linearRampToValueAtTime(0.10, this.audioCtx.currentTime + 3);
+    // Fade in master volume softly
+    this.masterGain.gain.linearRampToValueAtTime(0.18, this.audioCtx.currentTime + 3);
 
     this.playNextChord();
     this.timerId = setInterval(() => {

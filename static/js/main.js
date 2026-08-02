@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLandingSequence();
   initAudioToggle();
   initPage1Typing();
+  initPage1SkyCanvas();
   initScrollAnimations();
   initCinematicApologyScene();
   initPolaroids();
@@ -108,37 +109,13 @@ function initAudioToggle() {
 }
 
 /* ==========================================================================
-   4. PAGE 1: PEACEFUL NIGHT & LUXURY IVORY HANDWRITTEN LETTER
+   4. PAGE 1: TYPING EFFECT FOR HANDWRITTEN LETTER
    ========================================================================== */
-function initPage1PeacefulNight() {
-  const section = document.getElementById('page-1');
-  const paperCard = document.getElementById('page1-paper-card');
-  const headerEl = document.getElementById('page1-ink-header');
-  const bodyEl = document.getElementById('page1-typed-letter');
-  const moon = section ? section.querySelector('.night-moon') : null;
+function initPage1Typing() {
+  const letterTextContainer = document.getElementById('page1-typed-letter');
+  if (!letterTextContainer) return;
 
-  if (!section || !paperCard || !bodyEl) return;
-
-  initPage1NightCanvas();
-
-  // Mouse move 3D tilt on paper card
-  section.addEventListener('mousemove', (e) => {
-    const rect = paperCard.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-
-    const tiltX = (y / rect.height) * 8;
-    const tiltY = -(x / rect.width) * 8;
-
-    paperCard.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-  });
-
-  section.addEventListener('mouseleave', () => {
-    paperCard.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
-  });
-
-  const headerText = "Dear Himanshi,";
-  const bodyText = `I don't know why you're upset with me, but I can feel the distance between us.
+  const letterText = `I don't know why you're upset with me, but I can feel the distance between us.
 
 Maybe I made mistakes that hurt you.
 Maybe I didn't understand your feelings.
@@ -149,172 +126,27 @@ I genuinely want to understand.
 If I hurt you...
 I'm truly sorry.`;
 
-  let hasStarted = false;
+
+  let typedIndex = 0;
+  let hasTyped = false;
 
   ScrollTrigger.create({
-    trigger: section,
+    trigger: '#page-1',
     start: 'top 60%',
     onEnter: () => {
-      if (hasStarted) return;
-      hasStarted = true;
+      if (hasTyped) return;
+      hasTyped = true;
 
-      // 1. Moon slowly brightens
-      if (moon) {
-        gsap.to(moon, { opacity: 1, scale: 1, duration: 2.0, ease: 'power2.out' });
-      }
-
-      // 2. Paper gently unfolds
-      gsap.to(paperCard, {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 1.8,
-        ease: 'power3.out',
-        onComplete: () => {
-          // 3. Title writes itself with ink
-          typeHeader(0);
+      function typeNextChar() {
+        if (typedIndex < letterText.length) {
+          letterTextContainer.textContent += letterText.charAt(typedIndex);
+          typedIndex++;
+          setTimeout(typeNextChar, 35);
         }
-      });
+      }
+      typeNextChar();
     }
   });
-
-  function typeHeader(idx) {
-    if (idx < headerText.length) {
-      if (headerEl) headerEl.textContent += headerText.charAt(idx);
-      setTimeout(() => typeHeader(idx + 1), 60);
-    } else {
-      // 4. Paragraph appears with typewriter effect
-      setTimeout(() => typeBody(0), 400);
-    }
-  }
-
-  function typeBody(idx) {
-    if (idx < bodyText.length) {
-      bodyEl.textContent += bodyText.charAt(idx);
-      setTimeout(() => typeBody(idx + 1), 35);
-    }
-  }
-}
-
-// Night Canvas Engine for Page 1: Twinkling stars, fireflies, and occasional floating flower petal
-function initPage1NightCanvas() {
-  const canvas = document.getElementById('page1-night-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  function resize() {
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Stars
-  const stars = [];
-  for (let i = 0; i < 150; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 1.5 + 0.5,
-      alpha: Math.random() * 0.8 + 0.2,
-      vAlpha: (Math.random() - 0.5) * 0.008
-    });
-  }
-
-  // Fireflies
-  const fireflies = [];
-  for (let i = 0; i < 22; i++) {
-    fireflies.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 2 + 1,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      alpha: Math.random() * 0.8 + 0.2
-    });
-  }
-
-  // Single occasional floating flower petal
-  const petal = {
-    x: -50,
-    y: Math.random() * canvas.height * 0.5,
-    size: 10,
-    vx: 0.8,
-    vy: 0.3,
-    rotation: 0,
-    active: false
-  };
-
-  setInterval(() => {
-    if (!petal.active && Math.random() > 0.3) {
-      petal.x = -20;
-      petal.y = Math.random() * (canvas.height * 0.6);
-      petal.active = true;
-    }
-  }, 8000);
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw Stars
-    stars.forEach(s => {
-      s.alpha += s.vAlpha;
-      if (s.alpha > 0.9 || s.alpha < 0.2) s.vAlpha = -s.vAlpha;
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, s.alpha);
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    });
-
-    // Draw Fireflies
-    fireflies.forEach(f => {
-      f.x += f.vx;
-      f.y += f.vy;
-      if (f.x < 0) f.x = canvas.width;
-      if (f.x > canvas.width) f.x = 0;
-      if (f.y < 0) f.y = canvas.height;
-      if (f.y > canvas.height) f.y = 0;
-
-      ctx.save();
-      ctx.globalAlpha = f.alpha;
-      ctx.fillStyle = '#c084fc';
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = '#e6e6fa';
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    });
-
-    // Draw Occasional Floating Flower Petal
-    if (petal.active) {
-      petal.x += petal.vx;
-      petal.y += petal.vy + Math.sin(petal.x * 0.01) * 0.4;
-      petal.rotation += 0.5;
-
-      if (petal.x > canvas.width + 50) {
-        petal.active = false;
-      }
-
-      ctx.save();
-      ctx.translate(petal.x, petal.y);
-      ctx.rotate((petal.rotation * Math.PI) / 180);
-      ctx.globalAlpha = 0.6;
-      ctx.fillStyle = '#e6e6fa';
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.bezierCurveTo(-petal.size, -petal.size, -petal.size, petal.size, 0, petal.size * 1.4);
-      ctx.bezierCurveTo(petal.size, petal.size, petal.size, -petal.size, 0, 0);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    requestAnimationFrame(animate);
-  }
-  animate();
 }
 
 /* ==========================================================================
@@ -642,4 +474,136 @@ function initCinematicCanvas() {
   }
   animate();
 }
+
+/* ==========================================================================
+   9. PAGE 1 ANIMATED NIGHT SKY CANVAS ENGINE
+   ========================================================================== */
+function initPage1SkyCanvas() {
+  const canvas = document.getElementById('page1-sky-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Thousands of tiny twinkling stars (250 stars)
+  const stars = [];
+  for (let i = 0; i < 250; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.6 + 0.4,
+      alpha: Math.random() * 0.8 + 0.2,
+      vAlpha: (Math.random() - 0.5) * 0.012
+    });
+  }
+
+  // Small fireflies floating slowly (35 fireflies)
+  const fireflies = [];
+  for (let i = 0; i < 35; i++) {
+    fireflies.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.7 + 0.3,
+      color: Math.random() > 0.4 ? '#ffb7c5' : '#ffd700'
+    });
+  }
+
+  // Soft glowing floating hearts (subtle particles, low opacity)
+  const subtleHearts = [];
+  for (let i = 0; i < 16; i++) {
+    subtleHearts.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 8 + 6,
+      vy: -(Math.random() * 0.3 + 0.2),
+      vx: (Math.random() - 0.5) * 0.2,
+      alpha: Math.random() * 0.25 + 0.1,
+      rotation: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 0.5
+    });
+  }
+
+  function drawHeart(x, y, size, color, alpha, rotation) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = color;
+
+    ctx.beginPath();
+    const topCurveHeight = size * 0.3;
+    ctx.moveTo(0, topCurveHeight);
+    ctx.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurveHeight);
+    ctx.bezierCurveTo(-size / 2, (size + topCurveHeight) / 2, 0, size, 0, size);
+    ctx.bezierCurveTo(0, size, size / 2, (size + topCurveHeight) / 2, size / 2, topCurveHeight);
+    ctx.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurveHeight);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Stars
+    stars.forEach(s => {
+      s.alpha += s.vAlpha;
+      if (s.alpha > 0.95 || s.alpha < 0.15) s.vAlpha = -s.vAlpha;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, s.alpha);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Fireflies
+    fireflies.forEach(f => {
+      f.x += f.vx;
+      f.y += f.vy;
+      if (f.x < 0) f.x = canvas.width;
+      if (f.x > canvas.width) f.x = 0;
+      if (f.y < 0) f.y = canvas.height;
+      if (f.y > canvas.height) f.y = 0;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, f.alpha);
+      ctx.fillStyle = f.color;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = f.color;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Soft subtle floating hearts
+    subtleHearts.forEach(h => {
+      h.y += h.vy;
+      h.x += h.vx;
+      h.rotation += h.vRot;
+
+      if (h.y < -20) {
+        h.y = canvas.height + 20;
+        h.x = Math.random() * canvas.width;
+      }
+
+      drawHeart(h.x, h.y, h.size, '#ffb7c5', h.alpha, h.rotation);
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
 
