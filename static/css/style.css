@@ -1286,13 +1286,13 @@ body {
 .final-content-card {
   position: relative;
   z-index: 3;
-  max-width: 780px;
+  max-width: 600px;
   width: 100%;
-  padding: 52px 40px;
-  margin-top: 130px;
-  margin-bottom: 40px;
+  padding: 36px 28px;
+  margin-top: 100px;
+  margin-bottom: 30px;
   text-align: center;
-  background: rgba(12, 10, 25, 0.62);
+  background: rgba(12, 10, 25, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
@@ -1302,31 +1302,38 @@ body {
 
 .final-title-text {
   font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-size: clamp(2rem, 4.5vw, 3rem);
   color: var(--color-white);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   text-shadow: 0 0 20px rgba(255, 183, 197, 0.4);
 }
 
-.final-subtitle-text {
+.final-short-body p {
   font-family: var(--font-serif);
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-  line-height: 1.85;
-  color: var(--color-pink-soft);
-  margin-bottom: 28px;
-  font-style: italic;
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  line-height: 1.8;
+  color: var(--color-white-soft);
+  margin-bottom: 12px;
 }
 
-.final-small-para p {
-  font-family: var(--font-serif);
-  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
-  line-height: 1.9;
-  color: var(--color-white-soft);
-  margin-bottom: 14px;
+.final-short-body .final-highlight-line {
+  color: var(--color-pink-soft);
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+.final-heart-sig {
+  font-family: var(--font-script);
+  font-size: clamp(2.4rem, 5vw, 3rem);
+  color: var(--color-pink-soft);
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
 }
 
 .final-btn-wrapper {
-  margin: 36px 0;
+  margin: 28px 0 18px 0;
   display: flex;
   justify-content: center;
 }
@@ -1397,43 +1404,44 @@ body {
   }
 }
 
-.final-closing-note {
-  margin-top: 24px;
+.call-me-sub {
+  margin-top: 12px;
 }
 
-.no-pressure-title {
+.call-me-sub .call-text {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  color: var(--color-gold-light);
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--color-lavender);
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  opacity: 0.85;
 }
 
-.no-pressure-desc {
+.call-me-sub .phone-link {
   font-family: var(--font-serif);
-  font-size: 1.1rem;
-  line-height: 1.85;
-  color: var(--color-text-dim);
-  margin-bottom: 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gold-light);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.final-heart-sig {
-  font-family: var(--font-script);
-  font-size: 2.6rem;
-  color: var(--color-pink-soft);
-  text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
+.call-me-sub .phone-link:hover {
+  color: var(--color-white);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
 }
 
 @media (max-width: 768px) {
   .final-content-card {
-    padding: 36px 20px;
-    margin-top: 110px;
+    padding: 30px 20px;
+    margin-top: 80px;
+    max-width: 92%;
   }
 
   .glass-message-btn {
-    padding: 16px 32px;
+    padding: 15px 30px;
     font-size: 1.05rem;
     width: 100%;
   }
