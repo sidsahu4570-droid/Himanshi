@@ -1069,6 +1069,19 @@ body {
   text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
 }
 
+.staggered-memory-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.quote-intro {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--color-text-dim);
+  margin-bottom: 2px !important;
+}
+
 @media (max-width: 768px) {
   .storybook-container {
     padding: 0 16px;

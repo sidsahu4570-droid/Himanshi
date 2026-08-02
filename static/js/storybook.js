@@ -77,6 +77,15 @@ function initChapterReveals() {
         "-=0.2"
       );
     }
+
+    const memoryBlocks = section.querySelectorAll('.memory-quote-block, .memory-ending-block');
+    if (memoryBlocks.length > 0) {
+      timeline.fromTo(memoryBlocks,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.35, ease: 'power2.out' },
+        "-=0.2"
+      );
+    }
   });
 }
 
@@ -90,8 +99,48 @@ function initChapterCanvases() {
   initCh8Canvas(); // Fireworks
   initCh9Canvas(); // Rain
   initCh10Canvas(); // Garba Bokeh
+  initChSaidCanvas(); // Gentle starlight dots
   initChLearnedCanvas(); // Soft warm light particles
   initFinalCanvas(); // Floating Lanterns
+}
+
+// Chapter 11: Gentle Starlight Dots Canvas
+function initChSaidCanvas() {
+  const canvas = document.getElementById('canvas-ch-said');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const dots = Array.from({ length: 30 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 2 + 0.8,
+    alpha: Math.random() * 0.7 + 0.2,
+    vAlpha: (Math.random() * 0.01 + 0.005) * (Math.random() < 0.5 ? 1 : -1)
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      d.alpha += d.vAlpha;
+      if (d.alpha > 0.95 || d.alpha < 0.15) d.vAlpha = -d.vAlpha;
+
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 230, 240, ${Math.max(0.1, d.alpha)})`;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = '#ffe6f0';
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 
 // Chapter 13: Soft Warm Light Canvas
