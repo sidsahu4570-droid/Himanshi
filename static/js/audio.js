@@ -15,6 +15,7 @@ class RomanticPianoAudio {
     this.timerId = null;
     this.chordIndex = 0;
     this.targetVolume = 0.14; // 14% master volume (soft reading level)
+    this.silentAudio = null;
 
     // Frequencies (Hz)
     this.notes = {
@@ -99,30 +100,50 @@ class RomanticPianoAudio {
     this.stringsGain.connect(this.masterGain);
     this.masterGain.connect(this.audioCtx.destination);
 
+    if (!this.silentAudio) {
+      this.silentAudio = document.createElement('audio');
+      this.silentAudio.setAttribute('playsinline', '');
+      this.silentAudio.setAttribute('loop', '');
+      this.silentAudio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAARKwAAEsDAAAABAAgAZGF0YQAAAAA=';
+    }
+
     this.setupMobileUnlockListeners();
   }
 
-  async resumeContext() {
-    if (!this.audioCtx) this.init();
+  unlockSync() {
+    this.init();
+
     if (this.audioCtx && this.audioCtx.state === 'suspended') {
-      try {
-        await this.audioCtx.resume();
-      } catch (err) {
-        console.warn('AudioContext resume failed:', err);
-      }
+      this.audioCtx.resume();
     }
+
+    try {
+      if (this.audioCtx) {
+        const buffer = this.audioCtx.createBuffer(1, 1, 22050);
+        const source = this.audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.audioCtx.destination);
+        source.start(0);
+      }
+    } catch (e) {}
+
+    try {
+      if (this.silentAudio) {
+        this.silentAudio.play().catch(() => {});
+      }
+    } catch (e) {}
+
     if (this.audioCtx && this.audioCtx.state === 'running') {
       this.isUnlocked = true;
     }
-    return this.isUnlocked;
   }
 
   setupMobileUnlockListeners() {
-    const events = ['touchstart', 'pointerdown', 'click', 'scroll'];
+    const events = ['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'];
     
-    const unlockHandler = async () => {
-      await this.resumeContext();
-      if (this.isUnlocked) {
+    const unlockHandler = () => {
+      this.unlockSync();
+      if (this.isUnlocked || (this.audioCtx && this.audioCtx.state === 'running')) {
         if (!this.isPlaying && this.shouldPlayOnUnlock) {
           this.start();
         }
@@ -135,10 +156,9 @@ class RomanticPianoAudio {
     });
   }
 
-  async start() {
+  start() {
     this.shouldPlayOnUnlock = true;
-    this.init();
-    await this.resumeContext();
+    this.unlockSync();
 
     if (this.isPlaying) return true;
 
