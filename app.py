@@ -1,15 +1,11 @@
 import os
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 @app.route('/')
 def home():
     return render_template('index.html')
-
-@app.route('/assets/<path:filename>')
-def serve_assets(filename):
-    return send_from_directory('assets', filename)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
