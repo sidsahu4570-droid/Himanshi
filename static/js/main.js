@@ -81,12 +81,16 @@ function initLandingSequence() {
 
   // Click "Please Open This"
   btnEl.addEventListener('click', () => {
+    const audioWrapper = document.getElementById('audio-control-wrapper');
     // Start Audio
     if (window.romanticAudio) {
       window.romanticAudio.start();
     }
     if (audioBtn) {
       audioBtn.classList.add('visible');
+    }
+    if (audioWrapper) {
+      audioWrapper.classList.add('visible');
     }
 
     // Fade out Landing Screen
@@ -99,16 +103,33 @@ function initLandingSequence() {
 }
 
 /* ==========================================================================
-   3. AUDIO TOGGLE BUTTON
+   3. AUDIO TOGGLE BUTTON & TRACK LABEL
    ========================================================================== */
 function initAudioToggle() {
   const audioBtn = document.getElementById('audio-toggle-btn');
+  const trackLabel = document.getElementById('audio-track-label');
   if (!audioBtn) return;
+
+  function updateTrackLabel(isPlaying) {
+    if (!trackLabel) return;
+    trackLabel.style.opacity = '0';
+    setTimeout(() => {
+      if (isPlaying) {
+        trackLabel.textContent = '♫ Until I Found You';
+        trackLabel.style.color = 'var(--color-pink-soft)';
+      } else {
+        trackLabel.textContent = 'Music Paused';
+        trackLabel.style.color = 'rgba(255, 255, 255, 0.55)';
+      }
+      trackLabel.style.opacity = '1';
+    }, 200);
+  }
 
   audioBtn.addEventListener('click', () => {
     if (window.romanticAudio) {
       const playing = window.romanticAudio.toggle();
       audioBtn.style.color = playing ? '#ffd700' : 'rgba(255,255,255,0.4)';
+      updateTrackLabel(playing);
     }
   });
 }
