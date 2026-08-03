@@ -20,6 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function initChapterReveals() {
   const chapterSections = document.querySelectorAll('.chapter-section');
 
+  // Pre-calculate and lock fixed height once on every .chapter-card
+  chapterSections.forEach((section) => {
+    const card = section.querySelector('.chapter-card');
+    if (card) {
+      const fullHeight = card.getBoundingClientRect().height;
+      if (fullHeight > 0) {
+        card.style.height = `${Math.ceil(fullHeight)}px`;
+        card.style.minHeight = `${Math.ceil(fullHeight)}px`;
+      }
+    }
+  });
+
   chapterSections.forEach((section) => {
     const card = section.querySelector('.chapter-card');
     const badge = section.querySelector('.chapter-badge');
