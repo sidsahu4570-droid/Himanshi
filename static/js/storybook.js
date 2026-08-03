@@ -103,7 +103,47 @@ function initChapterCanvases() {
   initChDifferentlyCanvas(); // Soft drifting stars
   initChMoonCanvas(); // Soft moonlight dust
   initChLearnedCanvas(); // Soft warm light particles
+  initChReadfarCanvas(); // Gentle glowing heart sparks
   initFinalCanvas(); // Floating Lanterns
+}
+
+// Chapter 17: Gentle Glowing Heart Sparks Canvas
+function initChReadfarCanvas() {
+  const canvas = document.getElementById('canvas-ch-readfar');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = Array.from({ length: 20 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 2.2 + 1,
+    alpha: Math.random() * 0.6 + 0.2,
+    speedY: - (Math.random() * 0.2 + 0.1)
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.y += p.speedY;
+      if (p.y < -10) p.y = canvas.height + 10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 183, 197, ${Math.max(0.15, p.alpha)})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ffb7c5';
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 
 // Chapter 15: Soft Moonlight Dust Canvas
