@@ -83,9 +83,8 @@ function initLandingSequence() {
   // Click "Please Open This"
   btnEl.addEventListener('click', () => {
     const audioWrapper = document.getElementById('audio-control-wrapper');
-    // Start Audio synchronously
+    // Start Audio
     if (window.romanticAudio) {
-      window.romanticAudio.unlockSync();
       window.romanticAudio.start();
     }
     if (audioBtn) {
@@ -113,9 +112,7 @@ function initAudioToggle() {
 
   audioBtn.addEventListener('click', () => {
     if (window.romanticAudio) {
-      window.romanticAudio.unlockSync();
-      const playing = window.romanticAudio.toggle();
-      audioBtn.style.color = playing ? '#ffd700' : 'rgba(255,255,255,0.4)';
+      window.romanticAudio.toggle();
     }
   });
 }
