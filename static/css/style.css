@@ -1556,4 +1556,68 @@ body {
   text-shadow: 0 0 20px rgba(255, 183, 197, 0.6);
 }
 
+/* ==========================================================================
+   CINEMATIC CODA ENDING STYLING
+   ========================================================================== */
+.coda-section-wrap {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 60px 24px;
+}
+
+.coda-moon {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fff4e0 45%, #ebd5b3 100%);
+  box-shadow: 0 0 35px rgba(255, 240, 214, 0.9), 0 0 70px rgba(255, 215, 0, 0.5);
+  animation: moonBreathingGlow 4s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+.coda-content {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.coda-line {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  color: var(--color-white-soft);
+  line-height: 1.8;
+  margin-bottom: 14px;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.coda-line.emphasis {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--color-pink-soft);
+  text-shadow: 0 0 25px rgba(255, 183, 197, 0.7);
+}
+
+.coda-heart {
+  font-size: 2.5rem;
+  margin-top: 28px;
+  opacity: 0;
+  transform: translateY(12px);
+  filter: drop-shadow(0 0 20px rgba(255, 107, 139, 0.8));
+}
+
 

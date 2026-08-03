@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPolaroids();
   initFinalLakeSection();
   initWhatsAppButtonTransition();
+  initCinematicCoda();
 });
 
 /* ==========================================================================
@@ -1066,6 +1067,44 @@ function initWhatsAppButtonTransition() {
         window.open(targetUrl, '_blank');
       }, 500);
     }, 1000);
+  });
+}
+
+/* ==========================================================================
+   12. CINEMATIC CODA ENDING ANIMATION
+   ========================================================================== */
+function initCinematicCoda() {
+  const codaSection = document.getElementById('cinematic-coda');
+  const lines = document.querySelectorAll('#cinematic-coda .coda-line, #cinematic-coda .coda-heart');
+  if (!codaSection || lines.length === 0) return;
+
+  let hasTriggered = false;
+
+  ScrollTrigger.create({
+    trigger: codaSection,
+    start: 'top 70%',
+    onEnter: () => {
+      if (hasTriggered) return;
+      hasTriggered = true;
+
+      const timeline = gsap.timeline();
+
+      // Soft staggered line reveal
+      timeline.fromTo(lines, 
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 1.2, stagger: 0.6, ease: 'power2.out' }
+      );
+
+      // Stay visible for 4 seconds
+      timeline.to({}, { duration: 4.0 });
+
+      // Slowly fade away into silent darkness
+      timeline.to(lines, {
+        opacity: 0,
+        duration: 2.5,
+        ease: 'power2.inOut'
+      });
+    }
   });
 }
 
