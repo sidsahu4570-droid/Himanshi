@@ -980,31 +980,37 @@ body {
 }
 
 /* ==========================================================================
-   STORYBOOK 12-CHAPTER INTERACTIVE SECTION STYLING
+   STORYBOOK 18-CHAPTER GRID SYSTEM
    ========================================================================== */
-.storybook-container {
-  max-width: 1100px;
+.storybook-wrapper {
+  max-width: 1280px;
   width: 100%;
   margin: 80px auto;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
+  padding: 0 24px;
+  box-sizing: border-box;
 }
 
 .storybook-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
+}
+
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 32px;
+  row-gap: 80px;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chapter-section {
   position: relative;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
+  height: 100%;
   margin: 0 !important;
+  padding: 0 !important;
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
@@ -1023,6 +1029,8 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 1;
+  border-radius: 28px;
+  overflow: hidden;
 }
 
 .chapter-canvas-wrap canvas {
@@ -1031,9 +1039,11 @@ body {
 }
 
 .chapter-card {
-  max-width: 720px;
   width: 100%;
-  padding: 48px;
+  height: 480px;
+  min-height: 480px;
+  max-height: 480px;
+  padding: 36px 30px;
   z-index: 2;
   position: relative;
   border-radius: 28px;
@@ -1043,39 +1053,66 @@ body {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 183, 197, 0.15);
-  margin: 0 auto;
+  margin: 0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .chapter-badge {
   display: inline-block;
+  align-self: flex-start;
   padding: 6px 18px;
   border-radius: 30px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   background: rgba(255, 183, 197, 0.15);
   border: 1px solid rgba(255, 183, 197, 0.4);
   color: var(--color-pink-soft);
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   box-shadow: 0 0 12px rgba(255, 183, 197, 0.2);
+  flex-shrink: 0;
 }
 
 .chapter-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(1.4rem, 1.8vw, 1.9rem);
   color: var(--color-white);
-  margin-bottom: 24px;
-  line-height: 1.2;
+  margin-bottom: 16px;
+  line-height: 1.25;
+  flex-shrink: 0;
+}
+
+.chapter-text {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+}
+
+.chapter-text::-webkit-scrollbar {
+  width: 4px;
+}
+.chapter-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chapter-text::-webkit-scrollbar-thumb {
+  background: rgba(255, 183, 197, 0.3);
+  border-radius: 4px;
+}
+.chapter-text::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 183, 197, 0.6);
 }
 
 .chapter-text p {
   font-family: var(--font-serif);
-  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
-  line-height: 1.9;
+  font-size: clamp(1.02rem, 1.25vw, 1.15rem);
+  line-height: 1.75;
   color: var(--color-white-soft);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-weight: 400;
 }
 
@@ -1085,30 +1122,30 @@ body {
 
 .highlight-quote {
   font-family: var(--font-script) !important;
-  font-size: 1.6em !important;
+  font-size: 1.5em !important;
   color: var(--color-pink-soft);
   text-shadow: 0 0 15px rgba(255, 183, 197, 0.6);
-  margin: 12px 0;
+  margin: 10px 0;
 }
 
 .final-signature {
   font-family: var(--font-script);
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   color: var(--color-pink-soft);
   text-align: right;
-  margin-top: 32px;
+  margin-top: 24px;
   text-shadow: 0 0 20px rgba(255, 183, 197, 0.7);
 }
 
 .staggered-memory-text {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .quote-intro {
   font-family: var(--font-serif);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--color-text-dim);
   margin-bottom: 2px !important;
 }
@@ -1125,11 +1162,11 @@ body {
 }
 
 .glowing-moon-icon {
-  width: 76px;
-  height: 76px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fff4e0 45%, #ebd5b3 100%);
-  margin: 0 auto 24px auto;
+  margin: 0 auto 18px auto;
   box-shadow: 0 0 25px rgba(255, 240, 214, 0.8), 0 0 50px rgba(255, 215, 0, 0.4);
   animation: moonBreathingGlow 4s ease-in-out infinite alternate;
 }
@@ -1138,26 +1175,42 @@ body {
   text-align: center !important;
 }
 
-@media (max-width: 768px) {
-  .storybook-container {
-    padding: 0 16px;
-    margin: 40px auto;
-    gap: 60px;
+@media (max-width: 1024px) {
+  .storybook-wrapper {
+    padding: 0 20px;
+    margin: 60px auto;
   }
 
-  .chapter-section {
-    padding: 0;
-    margin: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+  .chapters-grid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 24px;
+    row-gap: 60px;
   }
 
   .chapter-card {
-    padding: 32px 20px;
-    border-radius: 24px;
-    width: 100%;
+    height: 460px;
+    min-height: 460px;
+    max-height: 460px;
+    padding: 30px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .storybook-wrapper {
+    padding: 0 16px;
+    margin: 40px auto;
+  }
+
+  .chapters-grid {
+    grid-template-columns: 1fr;
+    row-gap: 50px;
+  }
+
+  .chapter-card {
+    height: 440px;
+    min-height: 440px;
+    max-height: 440px;
+    padding: 24px 20px;
   }
 }
 
@@ -1601,8 +1654,8 @@ body {
   color: var(--color-white-soft);
   line-height: 1.8;
   margin-bottom: 14px;
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(12px);
 }
 
 .coda-line.emphasis {
@@ -1615,8 +1668,8 @@ body {
 .coda-heart {
   font-size: 2.5rem;
   margin-top: 28px;
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(12px);
   filter: drop-shadow(0 0 20px rgba(255, 107, 139, 0.8));
 }
 

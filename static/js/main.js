@@ -1082,7 +1082,7 @@ function initCinematicCoda() {
 
   ScrollTrigger.create({
     trigger: codaSection,
-    start: 'top 75%',
+    start: 'top 70%',
     onEnter: () => {
       if (hasTriggered) return;
       hasTriggered = true;
@@ -1092,14 +1092,17 @@ function initCinematicCoda() {
       // Soft staggered line reveal
       timeline.fromTo(lines, 
         { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 1.2, stagger: 0.5, ease: 'power2.out' }
+        { opacity: 1, y: 0, duration: 1.2, stagger: 0.6, ease: 'power2.out' }
       );
 
-      // Keep poem text permanently visible under breathing moon
+      // Stay visible for 4 seconds
+      timeline.to({}, { duration: 4.0 });
+
+      // Slowly fade away into silent darkness
       timeline.to(lines, {
-        opacity: 0.95,
-        duration: 1.5,
-        ease: 'power1.inOut'
+        opacity: 0,
+        duration: 2.5,
+        ease: 'power2.inOut'
       });
     }
   });
