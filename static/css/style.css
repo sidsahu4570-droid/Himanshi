@@ -161,20 +161,6 @@ body {
   fill: currentColor;
 }
 
-.audio-track-label {
-  font-family: var(--font-serif);
-  font-size: 0.72rem;
-  color: var(--color-pink-soft);
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 10px rgba(255, 183, 197, 0.4);
-  opacity: 1;
-  transition: opacity 0.3s ease, color 0.3s ease;
-  white-space: nowrap;
-  pointer-events: none;
-  font-weight: 400;
-  user-select: none;
-}
-
 /* Global Canvas Background Layer */
 #global-canvas {
   position: fixed;

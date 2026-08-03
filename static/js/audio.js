@@ -7,6 +7,8 @@ class RomanticPianoAudio {
   constructor() {
     this.audioCtx = null;
     this.isPlaying = false;
+    this.isUnlocked = false;
+    this.shouldPlayOnUnlock = false;
     this.masterGain = null;
     this.pianoGain = null;
     this.stringsGain = null;
@@ -96,14 +98,49 @@ class RomanticPianoAudio {
     this.pianoGain.connect(this.masterGain);
     this.stringsGain.connect(this.masterGain);
     this.masterGain.connect(this.audioCtx.destination);
+
+    this.setupMobileUnlockListeners();
   }
 
-  start() {
-    this.init();
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
+  async resumeContext() {
+    if (!this.audioCtx) this.init();
+    if (this.audioCtx && this.audioCtx.state === 'suspended') {
+      try {
+        await this.audioCtx.resume();
+      } catch (err) {
+        console.warn('AudioContext resume failed:', err);
+      }
     }
-    if (this.isPlaying) return;
+    if (this.audioCtx && this.audioCtx.state === 'running') {
+      this.isUnlocked = true;
+    }
+    return this.isUnlocked;
+  }
+
+  setupMobileUnlockListeners() {
+    const events = ['touchstart', 'pointerdown', 'click', 'scroll'];
+    
+    const unlockHandler = async () => {
+      await this.resumeContext();
+      if (this.isUnlocked) {
+        if (!this.isPlaying && this.shouldPlayOnUnlock) {
+          this.start();
+        }
+        events.forEach(evt => window.removeEventListener(evt, unlockHandler, { capture: true }));
+      }
+    };
+
+    events.forEach(evt => {
+      window.addEventListener(evt, unlockHandler, { capture: true, passive: true });
+    });
+  }
+
+  async start() {
+    this.shouldPlayOnUnlock = true;
+    this.init();
+    await this.resumeContext();
+
+    if (this.isPlaying) return true;
 
     this.isPlaying = true;
     const now = this.audioCtx.currentTime;
@@ -115,14 +152,21 @@ class RomanticPianoAudio {
 
     this.playMeasure();
     const measureDurationMs = 5400; // ~5.4s per measure (6/8 @ ~65 BPM)
+    if (this.timerId) clearInterval(this.timerId);
     this.timerId = setInterval(() => {
       if (this.isPlaying) {
         this.playMeasure();
       }
     }, measureDurationMs);
+
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    if (audioBtn) audioBtn.style.color = '#ffd700';
+
+    return true;
   }
 
   stop() {
+    this.shouldPlayOnUnlock = false;
     if (!this.isPlaying) return;
     this.isPlaying = false;
     if (this.timerId) {
@@ -136,6 +180,8 @@ class RomanticPianoAudio {
       this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
       this.masterGain.gain.linearRampToValueAtTime(0.0001, now + 3.0);
     }
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    if (audioBtn) audioBtn.style.color = 'rgba(255,255,255,0.4)';
   }
 
   toggle() {
