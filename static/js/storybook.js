@@ -100,8 +100,52 @@ function initChapterCanvases() {
   initCh9Canvas(); // Rain
   initCh10Canvas(); // Garba Bokeh
   initChSaidCanvas(); // Gentle starlight dots
+  initChDifferentlyCanvas(); // Soft drifting stars
   initChLearnedCanvas(); // Soft warm light particles
   initFinalCanvas(); // Floating Lanterns
+}
+
+// Chapter 14: Soft Drifting Stars Canvas
+function initChDifferentlyCanvas() {
+  const canvas = document.getElementById('canvas-ch-differently');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const stars = Array.from({ length: 22 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 2.2 + 1,
+    alpha: Math.random() * 0.6 + 0.2,
+    speedX: Math.random() * 0.3 - 0.15,
+    speedY: - (Math.random() * 0.2 + 0.1)
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.x += s.speedX;
+      s.y += s.speedY;
+      if (s.y < -10) s.y = canvas.height + 10;
+      if (s.x < -10) s.x = canvas.width + 10;
+      if (s.x > canvas.width + 10) s.x = -10;
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(230, 230, 250, ${Math.max(0.1, s.alpha)})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#e6e6fa';
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 
 // Chapter 11: Gentle Starlight Dots Canvas
