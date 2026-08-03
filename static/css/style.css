@@ -1422,25 +1422,24 @@ body {
   box-shadow: 0 15px 40px rgba(255, 107, 139, 0.6), 0 0 35px rgba(255, 215, 0, 0.5);
 }
 
-.glass-message-btn .btn-text {
-  position: relative;
-  z-index: 2;
+.compact-message-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 34px;
+  font-size: 1.1rem;
+  gap: 2px;
 }
 
-.ripple-effect {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  transform: scale(0);
-  animation: rippleAnim 0.7s linear;
-  pointer-events: none;
-}
-
-@keyframes rippleAnim {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+.compact-message-btn .btn-subtext {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--color-pink-soft);
+  opacity: 0.88;
+  letter-spacing: 0.03em;
+  font-weight: 400;
 }
 
 .call-me-sub {
