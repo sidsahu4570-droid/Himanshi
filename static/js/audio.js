@@ -1,58 +1,108 @@
 /* ==========================================================================
-   A LETTER FOR HIMANSHI - Web Audio API Ambient Romantic Piano Synthesizer
+   A LETTER FOR HIMANSHI - Background Audio Controller
+   Track: Until I Found You - Stephen Sanchez
    ========================================================================== */
 
-class RomanticPianoAudio {
+class UntilIFoundYouAudio {
   constructor() {
-    this.audioCtx = null;
+    this.primarySrc = '/assets/audio/until-i-found-you.mp3';
+    this.fallbackSrc = '/static/music/until-i-found-you.mp3';
+    this.audio = new Audio(this.primarySrc);
+    this.audio.loop = true;
+    this.audio.volume = 0;
+    this.targetVolume = 0.22; // 22% soft emotional volume
     this.isPlaying = false;
-    this.masterGain = null;
-    this.timerId = null;
-    this.chordIndex = 0;
+    this.userPaused = false;
+    this.fadeInterval = null;
+    this.isInitialized = false;
 
-    // Romantic ambient progression: Fmaj7 -> Am7 -> Cmaj7 -> Gsus4
-    this.chords = [
-      [174.61, 220.00, 261.63, 329.63], // Fmaj7 (F3, A3, C4, E4)
-      [220.00, 261.63, 329.63, 392.00], // Am7 (A3, C4, E4, G4)
-      [130.81, 164.81, 196.00, 246.94], // Cmaj7 (C3, E3, G3, B3)
-      [196.00, 246.94, 293.66, 349.23]  // G7/Gsus (G3, B3, D4, F4)
-    ];
+    // Fallback handler if assets path fails
+    this.audio.addEventListener('error', () => {
+      if (this.audio.src.includes('/assets/')) {
+        this.audio.src = this.fallbackSrc;
+        if (this.isPlaying) {
+          this.audio.play().catch(() => {});
+        }
+      }
+    });
+
+    this.setupUserGestureListener();
   }
 
-  init() {
-    if (this.audioCtx) return;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.audioCtx = new AudioContext();
+  setupUserGestureListener() {
+    const handleFirstGesture = () => {
+      if (!this.isInitialized && !this.userPaused) {
+        this.start();
+      }
+      document.removeEventListener('click', handleFirstGesture);
+      document.removeEventListener('touchstart', handleFirstGesture);
+      document.removeEventListener('keydown', handleFirstGesture);
+    };
 
-    this.masterGain = this.audioCtx.createGain();
-    this.masterGain.gain.setValueAtTime(0.001, this.audioCtx.currentTime);
-    this.masterGain.connect(this.audioCtx.destination);
+    document.addEventListener('click', handleFirstGesture, { once: true });
+    document.addEventListener('touchstart', handleFirstGesture, { once: true });
+    document.addEventListener('keydown', handleFirstGesture, { once: true });
+  }
+
+  fadeIn(duration = 2000) {
+    if (this.fadeInterval) clearInterval(this.fadeInterval);
+    const steps = 40;
+    const stepTime = duration / steps;
+    const volumeStep = this.targetVolume / steps;
+
+    this.audio.volume = 0;
+    const playPromise = this.audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        this.isPlaying = true;
+        this.updateUI(true);
+
+        this.fadeInterval = setInterval(() => {
+          if (this.audio.volume + volumeStep < this.targetVolume) {
+            this.audio.volume += volumeStep;
+          } else {
+            this.audio.volume = this.targetVolume;
+            clearInterval(this.fadeInterval);
+            this.fadeInterval = null;
+          }
+        }, stepTime);
+      }).catch(err => {
+        console.log("Autoplay policy prevented audio play:", err);
+      });
+    }
+  }
+
+  fadeOut(duration = 2000, callback) {
+    if (this.fadeInterval) clearInterval(this.fadeInterval);
+    const steps = 40;
+    const stepTime = duration / steps;
+    const volumeStep = Math.max(0.005, this.audio.volume / steps);
+
+    this.fadeInterval = setInterval(() => {
+      if (this.audio.volume - volumeStep > 0.01) {
+        this.audio.volume -= volumeStep;
+      } else {
+        this.audio.volume = 0;
+        this.audio.pause();
+        this.isPlaying = false;
+        this.updateUI(false);
+        clearInterval(this.fadeInterval);
+        this.fadeInterval = null;
+        if (callback) callback();
+      }
+    }, stepTime);
   }
 
   start() {
-    this.init();
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
-    }
-    if (this.isPlaying) return;
-
-    this.isPlaying = true;
-    // Fade in master volume softly
-    this.masterGain.gain.linearRampToValueAtTime(0.18, this.audioCtx.currentTime + 3);
-
-    this.playNextChord();
-    this.timerId = setInterval(() => {
-      this.playNextChord();
-    }, 4500);
+    this.isInitialized = true;
+    this.userPaused = false;
+    this.fadeIn(2000);
   }
 
   stop() {
-    if (!this.isPlaying) return;
-    this.isPlaying = false;
-    if (this.timerId) clearInterval(this.timerId);
-    if (this.masterGain && this.audioCtx) {
-      this.masterGain.gain.linearRampToValueAtTime(0.001, this.audioCtx.currentTime + 1.5);
-    }
+    this.userPaused = true;
+    this.fadeOut(2000);
   }
 
   toggle() {
@@ -65,50 +115,28 @@ class RomanticPianoAudio {
     }
   }
 
-  playNote(freq, delay = 0, duration = 4.0) {
-    if (!this.audioCtx || !this.isPlaying) return;
+  updateUI(isPlaying) {
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    const trackLabel = document.getElementById('audio-track-label');
 
-    const osc = this.audioCtx.createOscillator();
-    const noteGain = this.audioCtx.createGain();
-    
-    // Low pass filter for soft warm piano warmth
-    const filter = this.audioCtx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1000, this.audioCtx.currentTime);
+    if (audioBtn) {
+      audioBtn.style.color = isPlaying ? '#ffd700' : 'rgba(255,255,255,0.4)';
+    }
 
-    // Triangle waveform gives acoustic woodwind/piano undertones
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime + delay);
-
-    const startTime = this.audioCtx.currentTime + delay;
-    
-    // Soft attack, gentle decay
-    noteGain.gain.setValueAtTime(0.0001, startTime);
-    noteGain.gain.linearRampToValueAtTime(0.25, startTime + 0.08);
-    noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
-    osc.connect(filter);
-    filter.connect(noteGain);
-    noteGain.connect(this.masterGain);
-
-    osc.start(startTime);
-    osc.stop(startTime + duration);
-  }
-
-  playNextChord() {
-    const chord = this.chords[this.chordIndex];
-    // Arpeggiate chord notes with slight time offsets
-    chord.forEach((freq, idx) => {
-      this.playNote(freq, idx * 0.25, 4.5);
-    });
-
-    // Add a high delicate melody note
-    const highMelodyNotes = [523.25, 659.25, 587.33, 783.99]; // C5, E5, D5, G5
-    const melodyFreq = highMelodyNotes[this.chordIndex % highMelodyNotes.length];
-    this.playNote(melodyFreq, 1.2, 3.5);
-
-    this.chordIndex = (this.chordIndex + 1) % this.chords.length;
+    if (trackLabel) {
+      trackLabel.style.opacity = '0';
+      setTimeout(() => {
+        if (isPlaying) {
+          trackLabel.textContent = '♫ Until I Found You';
+          trackLabel.style.color = 'var(--color-pink-soft)';
+        } else {
+          trackLabel.textContent = 'Music Paused';
+          trackLabel.style.color = 'rgba(255, 255, 255, 0.55)';
+        }
+        trackLabel.style.opacity = '1';
+      }, 200);
+    }
   }
 }
 
-window.romanticAudio = new RomanticPianoAudio();
+window.romanticAudio = new UntilIFoundYouAudio();

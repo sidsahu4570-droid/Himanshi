@@ -365,11 +365,6 @@ function initFinalLakeSection() {
     trigger: section,
     start: 'top 70%',
     onEnter: () => {
-      // Soften piano background audio volume to a whisper
-      if (window.romanticAudio && window.romanticAudio.masterGain && window.romanticAudio.audioCtx) {
-        window.romanticAudio.masterGain.gain.linearRampToValueAtTime(0.06, window.romanticAudio.audioCtx.currentTime + 2.5);
-      }
-
       if (card) {
         gsap.fromTo(card,
           { opacity: 0, y: 40, scale: 0.95 },
