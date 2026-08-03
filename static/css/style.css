@@ -1601,8 +1601,8 @@ body {
   color: var(--color-white-soft);
   line-height: 1.8;
   margin-bottom: 14px;
-  opacity: 0;
-  transform: translateY(12px);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .coda-line.emphasis {
@@ -1615,8 +1615,8 @@ body {
 .coda-heart {
   font-size: 2.5rem;
   margin-top: 28px;
-  opacity: 0;
-  transform: translateY(12px);
+  opacity: 1;
+  transform: translateY(0);
   filter: drop-shadow(0 0 20px rgba(255, 107, 139, 0.8));
 }
 
