@@ -80,7 +80,7 @@ function initLandingSequence() {
 
   setTimeout(typeSubtitle, 600);
 
-  // Click "Please Open This"
+  // Click "Start Here"
   btnEl.addEventListener('click', () => {
     const audioWrapper = document.getElementById('audio-control-wrapper');
     // Start Audio
