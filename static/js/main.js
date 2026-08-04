@@ -27,25 +27,65 @@ document.addEventListener('DOMContentLoaded', () => {
    1. CUSTOM CURSOR
    ========================================================================== */
 function initCursor() {
-  const glow = document.querySelector('.cursor-glow');
-  const dot = document.querySelector('.cursor-dot');
+  /* ── Desktop: nothing to do (classic cursor, no glow div any more) ──── */
 
-  if (!glow || !dot) return;
+  /* ── Touch devices only: floating pink hearts ─────────────────────── */
+  if (!('ontouchstart' in window) && !navigator.maxTouchPoints) return;
 
-  window.addEventListener('mousemove', (e) => {
-    gsap.to(glow, {
-      x: e.clientX,
-      y: e.clientY,
-      duration: 0.6,
-      ease: 'power2.out'
-    });
-    gsap.to(dot, {
-      x: e.clientX,
-      y: e.clientY,
-      duration: 0.1,
-      ease: 'power2.out'
-    });
-  });
+  const MAX_HEARTS  = 10;   // hard cap on simultaneous hearts
+  const THROTTLE_MS = 150;  // minimum ms between hearts during continuous touch
+  let   lastSpawn   = 0;
+  let   activeHearts = 0;
+
+  function spawnHeart(x, y) {
+    if (activeHearts >= MAX_HEARTS) return;
+
+    const el = document.createElement('span');
+    el.className = 'touch-heart';
+    el.textContent = '❤';
+
+    // Per-heart randomisation via CSS custom properties
+    const rot  = (Math.random() * 30 - 15).toFixed(1);   // -15° to +15°
+    const dx   = (Math.random() * 16  - 8).toFixed(1);   // -8px to +8px drift
+    const rise = (Math.random() * 14  + 20).toFixed(1);  // 20–34px rise
+    const dur  = (Math.random() * 180 + 680).toFixed(0); // 680–860ms
+    const size = (Math.random() * 4   + 14).toFixed(0);  // 14–18px
+
+    el.style.cssText = [
+      `left:${x}px`,
+      `top:${y}px`,
+      `--rot:${rot}deg`,
+      `--dx:${dx}px`,
+      `--rise:${rise}px`,
+      `--dur:${dur}ms`,
+      `font-size:${size}px`
+    ].join(';');
+
+    document.body.appendChild(el);
+    activeHearts++;
+
+    // Remove after animation ends
+    el.addEventListener('animationend', () => {
+      el.remove();
+      activeHearts--;
+    }, { once: true });
+  }
+
+  // Single touch / tap
+  document.addEventListener('touchstart', (e) => {
+    const t = e.changedTouches[0];
+    spawnHeart(t.clientX, t.clientY);
+    lastSpawn = Date.now();
+  }, { passive: true });
+
+  // Continuous drag / scroll — throttled
+  document.addEventListener('touchmove', (e) => {
+    const now = Date.now();
+    if (now - lastSpawn < THROTTLE_MS) return;
+    const t = e.changedTouches[0];
+    spawnHeart(t.clientX, t.clientY);
+    lastSpawn = now;
+  }, { passive: true });
 }
 
 /* ==========================================================================
