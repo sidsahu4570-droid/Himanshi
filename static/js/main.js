@@ -731,10 +731,10 @@ function initCinematicApologyScene() {
         if (charIdx < item.text.length) {
           el.textContent += item.text.charAt(charIdx);
           charIdx++;
-          setTimeout(typeChar, 42);
+          setTimeout(typeChar, 14);
         } else {
           // Pause between sentences
-          const pauseDuration = (index === sentences.length - 1) ? 2400 : 1200;
+          const pauseDuration = (index === sentences.length - 1) ? 800 : 120;
           setTimeout(() => {
             playSentenceSequence(index + 1);
           }, pauseDuration);
